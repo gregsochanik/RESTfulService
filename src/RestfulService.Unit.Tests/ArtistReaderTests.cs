@@ -26,7 +26,7 @@ namespace RestfulService.Unit.Tests
 
 			var artistReader = new ArtistReader(_fileWrapper, _serializer);
 			artistReader.ReadFromFile(1);
-			_fileWrapper.AssertWasCalled(x=>x.CreateDirectory("/artist"));
+			_fileWrapper.AssertWasCalled(x=>x.CreateDirectory("~/artist"));
 		}
 
 		[Test]
@@ -39,10 +39,10 @@ namespace RestfulService.Unit.Tests
 		[Test]
 		[Category("Integration")]
 		public void Can_read_from_output_folder() {
+			// TODO: create new artist file
 			var artistReader = new ArtistReader(new FileWrapper(), new XmlSerializer<Artist>());
 			artistReader.ReadFromFile(1);
+			// TODO: tear down artist file
 		}
 	}
-
-
 }

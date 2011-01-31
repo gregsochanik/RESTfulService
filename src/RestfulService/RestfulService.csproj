@@ -84,7 +84,6 @@
     </Compile>
     <Compile Include="Handlers\ArtistHandler.cs" />
     <Compile Include="Handlers\HomeHandler.cs" />
-    <Compile Include="Handlers\IWriter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources\Artist.cs" />
     <Compile Include="Resources\ArtistResponse.cs" />
@@ -95,6 +94,7 @@
     <Compile Include="Utility\IO\Readers\ArtistReader.cs" />
     <Compile Include="Utility\IO\Readers\IReader.cs" />
     <Compile Include="Utility\IO\Writers\ArtistWriter.cs" />
+    <Compile Include="Utility\IO\Writers\IWriter.cs" />
     <Compile Include="Utility\Serialization\ISerializer.cs" />
     <Compile Include="Utility\Serialization\XmlSerializer.cs" />
     <Compile Include="Validation\ArtistValidator.cs" />

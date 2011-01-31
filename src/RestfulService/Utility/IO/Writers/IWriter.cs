@@ -1,4 +1,4 @@
-﻿namespace RestfulService.Handlers
+﻿namespace RestfulService.Utility.IO.Writers
 {
 	public interface IWriter<in T>
 	{

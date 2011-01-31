@@ -6,6 +6,7 @@ using OpenRasta.Web;
 using RestfulService.Exceptions;
 using RestfulService.Resources;
 using RestfulService.Utility.IO.Readers;
+using RestfulService.Utility.IO.Writers;
 using RestfulService.Validation;
 
 namespace RestfulService.Handlers

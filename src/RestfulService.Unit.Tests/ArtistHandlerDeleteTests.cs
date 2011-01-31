@@ -5,6 +5,7 @@ using RestfulService.Handlers;
 using RestfulService.Resources;
 using RestfulService.Utility.IO;
 using RestfulService.Utility.IO.Readers;
+using RestfulService.Utility.IO.Writers;
 using RestfulService.Utility.Serialization;
 using RestfulService.Validation;
 using Rhino.Mocks;
