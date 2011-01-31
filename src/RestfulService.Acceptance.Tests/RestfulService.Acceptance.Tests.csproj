@@ -51,7 +51,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\EndpointTesting\EndpointTesting.csproj">
+    <ProjectReference Include="..\EndpointTesting\EndpointTesting.csproj">
       <Project>{9442A255-3D4E-4018-96F7-BF767A0EEFCA}</Project>
       <Name>EndpointTesting</Name>
     </ProjectReference>

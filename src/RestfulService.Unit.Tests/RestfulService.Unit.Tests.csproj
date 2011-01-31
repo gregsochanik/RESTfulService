@@ -54,10 +54,11 @@
     <Compile Include="ArtistHandlerPutTests.cs" />
     <Compile Include="ArtistReaderTests.cs" />
     <Compile Include="ArtistWriterTests.cs" />
+    <Compile Include="FileWrapperTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\src\RestfulService\RestfulService.csproj">
+    <ProjectReference Include="..\RestfulService\RestfulService.csproj">
       <Project>{C3C3254F-DE8A-436E-B53F-4E2CBACC2EE4}</Project>
       <Name>RestfulService</Name>
     </ProjectReference>

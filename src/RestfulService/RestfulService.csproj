@@ -90,6 +90,7 @@
     <Compile Include="Resources\ArtistResponse.cs" />
     <Compile Include="Resources\HomeResponse.cs" />
     <Compile Include="Resources\Response.cs" />
+    <Compile Include="Utility\IO\FileWrapper.cs" />
     <Compile Include="Utility\IO\IFileWrapper.cs" />
     <Compile Include="Utility\IO\Readers\ArtistReader.cs" />
     <Compile Include="Utility\IO\Readers\IReader.cs" />

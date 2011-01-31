@@ -1,5 +1,4 @@
 ﻿using NUnit.Framework;
-using RestfulService.Handlers;
 using RestfulService.Resources;
 using RestfulService.Utility.IO.Writers;
 

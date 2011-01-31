@@ -1,6 +1,5 @@
 ﻿using System.IO;
 using NUnit.Framework;
-using RestfulService.Handlers;
 using RestfulService.Resources;
 using RestfulService.Utility.IO;
 using RestfulService.Utility.IO.Readers;
@@ -40,7 +39,8 @@ namespace RestfulService.Unit.Tests
 		[Test]
 		[Category("Integration")]
 		public void Can_read_from_output_folder() {
-			Assert.Fail("Functionality not implemented ");
+			var artistReader = new ArtistReader(new FileWrapper(), new XmlSerializer<Artist>());
+			artistReader.ReadFromFile(1);
 		}
 	}
 
