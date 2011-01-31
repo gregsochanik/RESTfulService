@@ -38,6 +38,7 @@ namespace RestfulService.Unit.Tests
 
 		[Test]
 		[Category("Integration")]
+		[Ignore("Not implemented yet")]
 		public void Can_read_from_output_folder() {
 			// TODO: create new artist file
 			var artistReader = new ArtistReader(new FileWrapper(), new XmlSerializer<Artist>());

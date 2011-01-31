@@ -17,9 +17,8 @@ namespace RestfulService.Utility.IO.Readers
 		}
 
 		public Artist ReadFromFile(int id) {
-			const string folderpath = "/artist";
-			if(!Directory.Exists(folderpath))
-				_fileWrapper.CreateDirectory(folderpath);
+			const string folderpath = "~/artist";
+			_fileWrapper.CreateDirectory(folderpath);
 
 			string filePath = String.Format("{0}/{1}.xml", folderpath, id);
 

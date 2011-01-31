@@ -25,7 +25,7 @@ namespace RestfulService.Unit.Tests {
 
 			var artistReader = new ArtistWriter(_fileWrapper, _serializer);
 			artistReader.CreateFile(new Artist());
-			_fileWrapper.AssertWasCalled(x => x.CreateDirectory("/artist"));
+			_fileWrapper.AssertWasCalled(x => x.CreateDirectory("~/artist"));
 		}
 
 		[Test]
