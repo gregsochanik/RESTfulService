@@ -12,10 +12,3 @@ log-file.txt
 .idea
 *.cache
 build/spec/report.html
-/SevenDigital.Api.Search-deployment.zip
-/SevenDigital.Api.Search-distribution.zip
-lib/Microsoft.Practices.ServiceLocation.dll
-lib/SolrNet*
-lib/OpenRasta*
-/lib/SevenDigital.Search.Domain.dll
-/lib/SevenDigital.Search.Domain.pdb
