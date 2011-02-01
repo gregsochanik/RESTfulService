@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using System.Xml;
 using RestfulService.Exceptions;
 using RestfulService.Resources;
