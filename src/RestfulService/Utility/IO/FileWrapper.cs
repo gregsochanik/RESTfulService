@@ -29,5 +29,17 @@ namespace RestfulService.Utility.IO
 			xml.LoadXml(raw);
 			return xml;
 		}
+
+		public void WriteFile(string data, string filepath) {
+			using (var fs = File.OpenWrite(filepath)) {
+				var sw = new StreamWriter(fs);
+				sw.Write(data);
+				sw.Flush();
+			}
+		}
+
+		public void DeleteFile(string filepath) {
+			File.Delete(filepath);
+		}
 	}
 }

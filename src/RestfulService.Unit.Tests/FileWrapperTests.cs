@@ -76,5 +76,26 @@ namespace RestfulService.Unit.Tests
 
 			Assert.Throws<XmlException>(() => fileWrapper.FileAsXml(tempFileName));
 		}
+
+		[Test]
+		public void Can_write_data() {
+			var tempFileName = Path.GetTempFileName();
+			var fileWrapper = new FileWrapper();
+			const string expected = "Foo man chu";
+			fileWrapper.WriteFile(expected, tempFileName);
+
+			var fileAsString = fileWrapper.FileAsString(tempFileName);
+
+			Assert.That(fileAsString, Is.EqualTo(expected));
+		}
+
+		[Test]
+		public void Can_delete_file() {
+			var tempFileName = Path.GetTempFileName();
+			var fileWrapper = new FileWrapper();
+			fileWrapper.DeleteFile(tempFileName);
+
+			Assert.That(fileWrapper.FileExists(tempFileName), Is.False);
+		}
 	}
 }

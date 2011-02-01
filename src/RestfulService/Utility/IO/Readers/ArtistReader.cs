@@ -8,6 +8,10 @@ namespace RestfulService.Utility.IO.Readers
 {
 	public class ArtistReader : IReader<Artist>
 	{
+		private const string ARTIST_DIRECTORY = "C:/artist";
+		private const string FILE_PATH_FORMAT = "{0}/{1}.xml";
+
+
 		private readonly IFileWrapper _fileWrapper;
 		private readonly ISerializer<Artist> _serializer;
 
@@ -17,10 +21,9 @@ namespace RestfulService.Utility.IO.Readers
 		}
 
 		public Artist ReadFromFile(int id) {
-			const string folderpath = "~/artist";
-			_fileWrapper.CreateDirectory(folderpath);
+			_fileWrapper.CreateDirectory(ARTIST_DIRECTORY);
 
-			string filePath = String.Format("{0}/{1}.xml", folderpath, id);
+			string filePath = String.Format(FILE_PATH_FORMAT, ARTIST_DIRECTORY, id);
 
 			if (!_fileWrapper.FileExists(filePath))
 				throw new FileNotFoundException(string.Format("Could not find this artist {0}", id));

@@ -24,6 +24,7 @@ namespace RestfulService.Handlers
 			_artistValidator = artistValidator;
 		}
 
+		[HttpOperation("GET")]
 		public OperationResult Get(int artistId) {
 			if (artistId <= 0)
 				return new OperationResult.BadRequest { Title="ArtistId parameter should be given" };
@@ -39,6 +40,7 @@ namespace RestfulService.Handlers
 			}
 		}
 
+		[HttpOperation("POST")]
 		public OperationResult Post(Artist artist) {
 			var errors = artist.GetErrors(_artistValidator);
 			if (errors.Count() > 0)
@@ -57,6 +59,7 @@ namespace RestfulService.Handlers
 			}
 		}
 
+		[HttpOperation("PUT")]
 		public OperationResult Put(Artist artist) {
 			var errors = artist.GetErrors(_artistValidator);
 			if (errors.Count() > 0)
@@ -73,6 +76,7 @@ namespace RestfulService.Handlers
 			}
 		}
 
+		[HttpOperation("DELETE")]
 		public OperationResult Delete(int artistId) {
 			if (artistId <= 0)
 				return new OperationResult.BadRequest { Title = "ArtistId parameter should be given" };

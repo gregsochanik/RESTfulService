@@ -3,6 +3,7 @@ using NUnit.Framework;
 using RestfulService.Resources;
 using RestfulService.Utility.IO;
 using RestfulService.Utility.IO.Readers;
+using RestfulService.Utility.IO.Writers;
 using RestfulService.Utility.Serialization;
 using Rhino.Mocks;
 
@@ -26,7 +27,7 @@ namespace RestfulService.Unit.Tests
 
 			var artistReader = new ArtistReader(_fileWrapper, _serializer);
 			artistReader.ReadFromFile(1);
-			_fileWrapper.AssertWasCalled(x=>x.CreateDirectory("~/artist"));
+			_fileWrapper.AssertWasCalled(x=>x.CreateDirectory("C:/artist"));
 		}
 
 		[Test]
@@ -38,12 +39,30 @@ namespace RestfulService.Unit.Tests
 
 		[Test]
 		[Category("Integration")]
-		[Ignore("Not implemented yet")]
 		public void Can_read_from_output_folder() {
-			// TODO: create new artist file
-			var artistReader = new ArtistReader(new FileWrapper(), new XmlSerializer<Artist>());
-			artistReader.ReadFromFile(1);
-			// TODO: tear down artist file
+			var fileWrapper = new FileWrapper();
+			var artistWriter = new ArtistWriter(fileWrapper, new XmlSerializer<Artist>());
+			const int artistId = 1000001;
+
+			artistWriter.DeleteFile(artistId);
+
+			var testArtist = new Artist{Id=artistId, Name="Test Artist", Genre="Rock"};
+			artistWriter.CreateFile(testArtist);
+			var artistReader = new ArtistReader(fileWrapper, new XmlSerializer<Artist>());
+			Artist artist = artistReader.ReadFromFile(artistId);
+			Assert.That(artist.Id, Is.EqualTo(testArtist.Id));
+			Assert.That(artist.Name, Is.EqualTo(testArtist.Name));
+			Assert.That(artist.Genre, Is.EqualTo(testArtist.Genre));
+
+			testArtist.Name = "Updated Artist";
+			artistWriter.UpdateFile(testArtist);
+
+			artist = artistReader.ReadFromFile(artistId);
+			Assert.That(artist.Id, Is.EqualTo(testArtist.Id));
+			Assert.That(artist.Name, Is.EqualTo(testArtist.Name));
+			Assert.That(artist.Genre, Is.EqualTo(testArtist.Genre));
+
+			artistWriter.DeleteFile(artistId);
 		}
 	}
 }

@@ -17,8 +17,10 @@ namespace RestfulService
 
 				ResourceSpace.Has
 					.ResourcesOfType<ArtistResponse>()
-					.AtUri("/artist/{artistId}").And.AtUri("/artist")
-					.HandledBy<ArtistHandler>().AsXmlSerializer().ForMediaType(new MediaType("text/xml")).ForMediaType(MediaType.Xml)
+					.AtUri("/artist").And
+					.AtUri("/artist/{artistId}")
+					.HandledBy<ArtistHandler>()
+					.AsXmlSerializer().ForMediaType(new MediaType("text/xml")).ForMediaType(MediaType.Xml)
 					.And
 					.AsJsonDataContract().ForMediaType(MediaType.Json);
 			}

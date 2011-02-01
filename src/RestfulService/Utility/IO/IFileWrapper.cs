@@ -7,5 +7,7 @@ namespace RestfulService.Utility.IO
 		bool FileExists(string filePath);
 		string FileAsString(string filePath);
 		IXPathNavigable FileAsXml(string filePath);
+		void WriteFile(string data, string filepath);
+		void DeleteFile(string filepath);
 	}
 }

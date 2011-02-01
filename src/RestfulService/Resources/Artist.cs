@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Xml.Serialization;
+using OpenRasta.Binding;
 using RestfulService.Validation;
 
 namespace RestfulService.Resources
 {
 	[Serializable]
+	[KeyedValuesBinder]
 	public class Artist
 	{
-		[XmlAttribute("id")]
 		public int Id { get; set; }
 		public string Name { get; set; }
 		public string Genre { get; set; }
