@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using log4net;
+using OpenRasta;
 using OpenRasta.Web;
 using RestfulService.Exceptions;
 using RestfulService.Resources;
@@ -37,7 +39,7 @@ namespace RestfulService.Handlers
 		[HttpOperation("GET")]
 		public OperationResult Get(int artistId = 0) {
 			if (artistId <= 0)
-				return new OperationResult.BadRequest { Title="ArtistId parameter should be given" };
+				return new OperationResult.BadRequest { Errors = new List<Error>(){new Error{Message="ArtistId parameter should be given"} } };
 
 			var uriString = string.Format("{0}artist/{1}", _baseUrl, artistId);
 
@@ -58,14 +60,13 @@ namespace RestfulService.Handlers
 		public OperationResult Post(Artist artist) {
 			var errors = artist.GetErrors(_artistValidator);
 			if (errors.Count() > 0)
-				return new OperationResult.BadRequest { Title = errors.FirstOrDefault().ErrorMessage, Description = errors.FirstOrDefault().ErrorMessage, };
+				return new OperationResult.BadRequest();
 
-			var uriString = string.Format("{0}artist/{1}",_baseUrl, artist.Id);
+			var uriString = CreateUriString(artist.Id);
 
 			try {
 				_writer.CreateFile(artist);
 				return new OperationResult.Created { RedirectLocation = new Uri(uriString) };
-
 			} catch (ResourceExistsException rex) {
 				return new OperationResult.Found { RedirectLocation = new Uri(uriString) };
 			} catch (Exception ex) {
@@ -87,9 +88,10 @@ namespace RestfulService.Handlers
 				if (!string.IsNullOrEmpty(artist.Genre))
 					artistToUpdate.Genre = artist.Genre;
 				
-				var uriString = string.Format("{0}artist/{1}", _baseUrl, artistToUpdate.Id);
-
 				_writer.UpdateFile(artistToUpdate);
+				
+				var uriString = CreateUriString(artistToUpdate.Id);
+				
 				return new OperationResult.NoContent { RedirectLocation = new Uri(uriString), ResponseResource = new ArtistResponse{Response= artistToUpdate}};
 
 			} catch (FileNotFoundException fex) {
@@ -100,19 +102,30 @@ namespace RestfulService.Handlers
 			}
 		}
 
+		private string CreateUriString(int artistId) {
+			return string.Format("{0}artist/{1}", _baseUrl, artistId);
+		}
+
 		[HttpOperation("DELETE")]
 		public OperationResult Delete(int artistId = 0) {
 			if (artistId <= 0)
 				return new OperationResult.BadRequest { Title = "ArtistId parameter should be given" };
+
+			
+
 			try {
 				_writer.DeleteFile(artistId);
+
 				return new OperationResult.NoContent();
 
 			} catch (FileNotFoundException fex) {
 				return new OperationResult.NotFound();
+			} catch (IOException iex) {
+				var uriString = CreateUriString(artistId);
+				return new OperationResult.MethodNotAllowed(new Uri(uriString), HttpVerb.DELETE.ToString(), artistId);
 			} catch (Exception ex) {
 				_log.Error(ex);
-				return new OperationResult.InternalServerError();
+				return new OperationResult.InternalServerError{StatusCode = 503};
 			}
 		}
 	}
