@@ -24,38 +24,40 @@ namespace RestfulService.Unit.Tests
 			_fileWrapper = MockRepository.GenerateStub<IFileWrapper>();
 			_serializer = MockRepository.GenerateStub<ISerializer<Artist>>();
 
-			_reader = new ArtistReader(_fileWrapper, _serializer);
+			_reader = MockRepository.GenerateStub<IReader<Artist>>();
 			_writer = MockRepository.GenerateStub<IWriter<Artist>>();
 		}
 
 		[Test]
 		public void Should_return_BadRequest_if_parameters_are_missing() {
 			var artistHandler = new ArtistHandler(_writer, _reader, new ArtistValidator());
-			var operationResult = artistHandler.Put(new Artist { Id = 0, Genre = "", Name = "" });
+			var operationResult = artistHandler.Put(0, new Artist { Id = 0, Genre = "", Name = "" });
 			Assert.That(operationResult.StatusCode, Is.EqualTo(400));
-			Assert.That(operationResult.Title, Is.EqualTo("ArtistId parameter missing"));
+			Assert.That(operationResult.Title, Is.EqualTo("ArtistId parameter should be given"));
 		}
 
 		[Test]
 		public void Should_return_InternalServerError_on_exception() {
-			_writer.Stub(x => x.UpdateFile(null)).IgnoreArguments().Throw(new Exception());
+			_reader.Stub(x => x.ReadFromFile(0)).IgnoreArguments().Throw(new Exception());
 			var artistHandler = new ArtistHandler(_writer, _reader, new ArtistValidator());
-			var operationResult = artistHandler.Put(new Artist { Id = 1, Genre = "r", Name = "r" });
+			var operationResult = artistHandler.Put(1, new Artist { Id = 1, Genre = "r", Name = "r" });
 			Assert.That(operationResult.StatusCode, Is.EqualTo(500));
 		}
 
 		[Test]
 		public void Should_return_NotFound_with_incorrect_artist() {
-			_writer.Stub(x => x.UpdateFile(null)).IgnoreArguments().Throw(new FileNotFoundException());
+			_reader.Stub(x => x.ReadFromFile(0)).IgnoreArguments().Throw(new FileNotFoundException());
 			var artistHandler = new ArtistHandler(_writer, _reader, new ArtistValidator());
-			var operationResult = artistHandler.Put(new Artist { Id = 1, Genre = "r", Name = "r" });
+			var operationResult = artistHandler.Put(1, new Artist { Id = 1, Genre = "r", Name = "r" });
 			Assert.That(operationResult.StatusCode, Is.EqualTo(404));
 		}
 
 		[Test]
 		public void Should_return_NoContent_on_successful_update() {
 			var artistHandler = new ArtistHandler(_writer, _reader, new ArtistValidator());
-			var operationResult = artistHandler.Put(new Artist { Id = 1, Genre = "r", Name = "r" });
+			var artist = new Artist { Id = 1, Genre = "r", Name = "r" };
+			_reader.Stub(x => x.ReadFromFile(0)).IgnoreArguments().Return(artist);
+			var operationResult = artistHandler.Put(1, artist);
 			Assert.That(operationResult.StatusCode, Is.EqualTo(204));
 		}
 	}

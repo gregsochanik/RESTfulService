@@ -31,6 +31,7 @@ namespace RestfulService.Utility.IO
 		}
 
 		public void WriteFile(string data, string filepath) {
+			DeleteFile(filepath);
 			using (var fs = File.OpenWrite(filepath)) {
 				var sw = new StreamWriter(fs);
 				sw.Write(data);

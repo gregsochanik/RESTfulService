@@ -7,7 +7,7 @@ namespace RestfulService.Resources
 {
 	[Serializable]
 	[KeyedValuesBinder]
-	public class Artist
+	public class Artist : IHasId
 	{
 		public int Id { get; set; }
 		public string Name { get; set; }
@@ -16,5 +16,10 @@ namespace RestfulService.Resources
 		public IEnumerable<ValidationResponse> GetErrors(ISelfValidator<Artist> validator) {
 			return validator.Validate(this);
 		}
+	}
+
+	public interface IHasId
+	{
+		int Id { get; set; }
 	}
 }

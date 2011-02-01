@@ -54,7 +54,7 @@ namespace RestfulService.Unit.Tests {
 			var artistWriter = new ArtistWriter(_fileWrapper, _serializer);
 			var artist = new Artist() { Id = 1, Genre = "Rock", Name = "Test" };
 			artistWriter.CreateFile(artist);
-			xPathNavigable.AssertWasCalled(x=>x.Save(Arg<string>.Is.Anything));
+			_fileWrapper.AssertWasCalled(x => x.WriteFile(Arg<string>.Is.Anything, Arg<string>.Is.Anything));
 		}
 	}
 }

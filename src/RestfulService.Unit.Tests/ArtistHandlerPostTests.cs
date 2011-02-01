@@ -54,7 +54,7 @@ namespace RestfulService.Unit.Tests
 			var artistHandler = new ArtistHandler(_writer, _reader, new ArtistValidator());
 			var operationResult = artistHandler.Post(new Artist { Id = 1, Genre = "r", Name = "r" });
 			Assert.That(operationResult.StatusCode, Is.EqualTo(302));
-			Assert.That(operationResult.RedirectLocation, Is.EqualTo(new Uri(_baseUrl + "/artist/1")));
+			Assert.That(operationResult.RedirectLocation, Is.EqualTo(new Uri(_baseUrl + "artist/1")));
 		}
 
 		[Test]
@@ -62,7 +62,7 @@ namespace RestfulService.Unit.Tests
 			var artistHandler = new ArtistHandler(_writer, _reader, new ArtistValidator());
 			var operationResult = artistHandler.Post(new Artist { Id = 1, Genre = "r", Name = "r" });
 			Assert.That(operationResult.StatusCode, Is.EqualTo(201));
-			Assert.That(((OperationResult.Created)operationResult).CreatedResourceUrl, Is.EqualTo(new Uri(_baseUrl + "/artist/1")));
+			Assert.That(operationResult.RedirectLocation, Is.EqualTo(new Uri(_baseUrl + "artist/1")));
 		}
 	}
 }

@@ -1,19 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Security;
-using System.Web.SessionState;
+using System.Reflection;
+using log4net;
+using log4net.Config;
 
 namespace RestfulService
 {
 	public class Global : System.Web.HttpApplication
 	{
-
-		void Application_Start(object sender, EventArgs e)
-		{
-			// Code that runs on application startup
-
+		protected void Application_Start(object sender, EventArgs e) {
+			try {
+				XmlConfigurator.Configure();
+			} catch (Exception ex) {
+				Console.WriteLine("Cannot create log4Net logger. Ex.Message: {0}. StackTrace: {1}", ex.Message, ex.StackTrace);
+			}
 		}
 
 		void Application_End(object sender, EventArgs e)

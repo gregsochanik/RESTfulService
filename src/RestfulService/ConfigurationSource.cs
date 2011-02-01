@@ -1,4 +1,5 @@
 ﻿using OpenRasta.Configuration;
+using OpenRasta.IO;
 using OpenRasta.Web;
 using RestfulService.Handlers;
 using RestfulService.Resources;
@@ -23,6 +24,13 @@ namespace RestfulService
 					.AsXmlSerializer().ForMediaType(new MediaType("text/xml")).ForMediaType(MediaType.Xml)
 					.And
 					.AsJsonDataContract().ForMediaType(MediaType.Json);
+
+				ResourceSpace.Has
+					.ResourcesOfType<IFile>()
+					.AtUri("/download").And
+					.AtUri("/download/{trackId}")
+					.HandledBy<TrackDownloadHandler>();
+
 			}
 		}
 	}

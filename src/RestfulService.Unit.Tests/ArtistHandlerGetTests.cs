@@ -74,9 +74,9 @@ namespace RestfulService.Unit.Tests {
 			var operationResult = artistHandler.Get(artistId);
 			Assert.That(operationResult.StatusCode, Is.EqualTo(200));
 			Assert.That(operationResult.ResponseResource, Is.Not.Null);
-			Assert.That(((ArtistResponse)operationResult.ResponseResource).Output.Name, Is.EqualTo(expected));
-			Assert.That(((ArtistResponse)operationResult.ResponseResource).Output.Id, Is.EqualTo(artistId));
-			Assert.That(((ArtistResponse)operationResult.ResponseResource).Output.Genre, Is.EqualTo(expectedGenre));
+			Assert.That(((ArtistResponse)operationResult.ResponseResource).Response.Name, Is.EqualTo(expected));
+			Assert.That(((ArtistResponse)operationResult.ResponseResource).Response.Id, Is.EqualTo(artistId));
+			Assert.That(((ArtistResponse)operationResult.ResponseResource).Response.Genre, Is.EqualTo(expectedGenre));
 		}
 	}
 }

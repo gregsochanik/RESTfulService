@@ -84,6 +84,8 @@
     </Compile>
     <Compile Include="Handlers\ArtistHandler.cs" />
     <Compile Include="Handlers\HomeHandler.cs" />
+    <Compile Include="Handlers\HttpVerb.cs" />
+    <Compile Include="Handlers\TrackDownloadHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources\Artist.cs" />
     <Compile Include="Resources\ArtistResponse.cs" />

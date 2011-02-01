@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Xml;
 using RestfulService.Exceptions;
 using RestfulService.Resources;
@@ -7,24 +6,24 @@ using RestfulService.Utility.Serialization;
 
 namespace RestfulService.Utility.IO.Writers
 {
-	public class ArtistWriter : IWriter<Artist>
+	public class Writer<T> : IWriter<T> where T : IHasId
 	{
-		private const string ARTIST_DIRECTORY = "C:/artist";
+		protected string MainDirectory = "";
 		private const string FILE_PATH_FORMAT = "{0}/{1}.xml";
 
 		private readonly IFileWrapper _fileWrapper;
-		private readonly ISerializer<Artist> _serializer;
+		private readonly ISerializer<T> _serializer;
 
-		public ArtistWriter(IFileWrapper fileWrapper, ISerializer<Artist> serializer) {
+		public Writer(IFileWrapper fileWrapper, ISerializer<T> serializer) {
 			_fileWrapper = fileWrapper;
 			_serializer = serializer;
 		}
 
-		public void CreateFile(Artist artist) {
-			_fileWrapper.CreateDirectory(ARTIST_DIRECTORY);
+		public void CreateFile(T artist) {
+			_fileWrapper.CreateDirectory(MainDirectory);
 			string filePath = GetFilePath(artist.Id);
-			if(_fileWrapper.FileExists(filePath))
-				throw new ResourceExistsException(string.Format("Artist {0} already exists", artist.Id));
+			if (_fileWrapper.FileExists(filePath))
+				throw new ResourceExistsException(string.Format("{0} {1} already exists", typeof(T), artist.Id));
 
 			var xPathNavigable = _serializer.Serialize(artist) as XmlDocument;
 
@@ -32,13 +31,13 @@ namespace RestfulService.Utility.IO.Writers
 				_fileWrapper.WriteFile(xPathNavigable.InnerXml, filePath);
 		}
 
-		public void UpdateFile(Artist artist) {
+		public void UpdateFile(T artist) {
 			string filePath = GetFilePath(artist.Id);
 			if (!_fileWrapper.FileExists(filePath))
 				throw new FileNotFoundException(string.Format("Artist {0} not found", artist.Id));
 
 			var xPathNavigable = _serializer.Serialize(artist) as XmlDocument;
-			if(xPathNavigable != null)
+			if (xPathNavigable != null)
 				_fileWrapper.WriteFile(xPathNavigable.InnerXml, filePath);
 		}
 
@@ -48,8 +47,16 @@ namespace RestfulService.Utility.IO.Writers
 				_fileWrapper.DeleteFile(filePath);
 		}
 
-		private static string GetFilePath(int id) {
-			return string.Format(FILE_PATH_FORMAT, ARTIST_DIRECTORY, id);
+		private string GetFilePath(int id) {
+			return string.Format(FILE_PATH_FORMAT, MainDirectory, id);
+		}
+	} 
+
+	public class ArtistWriter : Writer<Artist>
+	{
+		public ArtistWriter(IFileWrapper fileWrapper, ISerializer<Artist> serializer) 
+			: base(fileWrapper, serializer) {
+			MainDirectory = "C:/artist";
 		}
 	}
 }
