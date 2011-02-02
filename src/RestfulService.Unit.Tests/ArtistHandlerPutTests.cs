@@ -33,7 +33,7 @@ namespace RestfulService.Unit.Tests
 			var artistHandler = new ArtistHandler(_writer, _reader, new ArtistValidator());
 			var operationResult = artistHandler.Put(0, new Artist { Id = 0, Genre = "", Name = "" });
 			Assert.That(operationResult.StatusCode, Is.EqualTo(400));
-			Assert.That(operationResult.Title, Is.EqualTo("ArtistId parameter should be given"));
+			Assert.That(operationResult.Title, Is.EqualTo("ArtistId parameter should be supplied"));
 		}
 
 		[Test]

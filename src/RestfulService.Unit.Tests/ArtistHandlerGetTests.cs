@@ -38,8 +38,9 @@ namespace RestfulService.Unit.Tests {
 		[Test]
 		public void Get_should_return_bad_request_if_no_id_supplied() {
 			var artistHandler = new ArtistHandler(_writer, _reader, new ArtistValidator());
-			var operationResult = artistHandler.Get(0);
+			var operationResult = artistHandler.Get();
 			Assert.That(operationResult.StatusCode, Is.EqualTo(400));
+			Assert.That(operationResult.Title, Is.EqualTo("ArtistId parameter should be supplied"));
 		}
 
 		[Test]

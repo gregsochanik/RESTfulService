@@ -37,7 +37,8 @@ namespace RestfulService.Unit.Tests
 			var artistHandler = new ArtistHandler(_writer, _reader, new ArtistValidator());
 			var operationResult = artistHandler.Post(new Artist{Id = 0, Genre = "", Name = ""});
 			Assert.That(operationResult.StatusCode, Is.EqualTo(400));
-			Assert.That(operationResult.Title, Is.EqualTo("ArtistId parameter missing"));
+			Assert.That(operationResult.Title, Is.EqualTo("ArtistId parameter should be supplied"));
+			Assert.That(((OperationResult.BadRequest)operationResult).Errors.Count, Is.EqualTo(3));
 		}
 
 		[Test]

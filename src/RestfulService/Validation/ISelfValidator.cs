@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
+using OpenRasta;
 
 namespace RestfulService.Validation
 {
 	public interface ISelfValidator<T>
 	{
-		IEnumerable<ValidationResponse> Validate(T item);
+		IEnumerable<Error> Validate(T item);
 	}
 }

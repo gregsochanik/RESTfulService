@@ -36,11 +36,11 @@ namespace RestfulService.Unit.Tests
 		}
 
 		[Test]
-		public void Should_return_InternalServerError_on_exception() {
+		public void Should_return_NotAvailable_on_exception() {
 			_writer.Stub(x => x.DeleteFile(1)).IgnoreArguments().Throw(new Exception());
 			var artistHandler = new ArtistHandler(_writer, _reader, new ArtistValidator());
 			var operationResult = artistHandler.Delete(1);
-			Assert.That(operationResult.StatusCode, Is.EqualTo(500));
+			Assert.That(operationResult.StatusCode, Is.EqualTo(503));
 		}
 
 		[Test]

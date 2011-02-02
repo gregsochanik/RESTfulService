@@ -22,6 +22,7 @@ namespace RestfulService.Handlers
 		private readonly ILog _log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
 		private readonly string _baseUrl = ConfigurationManager.AppSettings["Application.BaseUrl"];
+		private const string URI_STRING_FORMAT = "{0}artist/{1}";
 
 		public ArtistHandler(IWriter<Artist> writer, IReader<Artist> reader, ISelfValidator<Artist> artistValidator) {
 			_writer = writer;
@@ -29,25 +30,18 @@ namespace RestfulService.Handlers
 			_artistValidator = artistValidator;
 		}
 
-		public ArtistHandler(IWriter<Artist> writer, IReader<Artist> reader, ISelfValidator<Artist> artistValidator, ILog log) {
-			_writer = writer;
-			_reader = reader;
-			_artistValidator = artistValidator;
-			_log = log;
-		}
-
 		[HttpOperation("GET")]
 		public OperationResult Get(int artistId = 0) {
 			if (artistId <= 0)
-				return new OperationResult.BadRequest { Errors = new List<Error>(){new Error{Message="ArtistId parameter should be given"} } };
+				return CreateBadRequestResponse("ArtistId parameter should be supplied");
 
-			var uriString = string.Format("{0}artist/{1}", _baseUrl, artistId);
+			var uriString = string.Format(URI_STRING_FORMAT, _baseUrl, artistId);
 
 			try {
 				var artist = _reader.ReadFromFile(artistId);
 				return new OperationResult.OK(new ArtistResponse { Response = artist, Link = new Link("artist", uriString, HttpVerb.DELETE) });
 
-			} catch (FileNotFoundException fex) {
+			} catch (FileNotFoundException) {
 				return new OperationResult.NotFound { Description = String.Format("Artist {0} not found", artistId) };
 			}
 			catch (Exception ex) {
@@ -60,14 +54,14 @@ namespace RestfulService.Handlers
 		public OperationResult Post(Artist artist) {
 			var errors = artist.GetErrors(_artistValidator);
 			if (errors.Count() > 0)
-				return new OperationResult.BadRequest();
+				return CreateBadRequestResponse("ArtistId parameter should be supplied", errors.ToList());
 
 			var uriString = CreateUriString(artist.Id);
 
 			try {
 				_writer.CreateFile(artist);
 				return new OperationResult.Created { RedirectLocation = new Uri(uriString) };
-			} catch (ResourceExistsException rex) {
+			} catch (ResourceExistsException) {
 				return new OperationResult.Found { RedirectLocation = new Uri(uriString) };
 			} catch (Exception ex) {
 				_log.Error(ex);
@@ -78,23 +72,18 @@ namespace RestfulService.Handlers
 		[HttpOperation("PUT")]
 		public OperationResult Put(int artistId, Artist artist) {
 			if (artistId <= 0)
-				return new OperationResult.BadRequest { Title = "ArtistId parameter should be given" };
+				return CreateBadRequestResponse("ArtistId parameter should be supplied");
 
 			try {
 				var artistToUpdate = _reader.ReadFromFile(artistId);
+				ReMapArtist(artist, artistToUpdate);
 
-				if(!string.IsNullOrEmpty(artist.Name))
-					artistToUpdate.Name = artist.Name;
-				if (!string.IsNullOrEmpty(artist.Genre))
-					artistToUpdate.Genre = artist.Genre;
-				
 				_writer.UpdateFile(artistToUpdate);
-				
 				var uriString = CreateUriString(artistToUpdate.Id);
 				
-				return new OperationResult.NoContent { RedirectLocation = new Uri(uriString), ResponseResource = new ArtistResponse{Response= artistToUpdate}};
+				return new OperationResult.NoContent { RedirectLocation = new Uri(uriString) };
 
-			} catch (FileNotFoundException fex) {
+			} catch (FileNotFoundException) {
 				return new OperationResult.NotFound();
 			} catch (Exception ex) {
 				_log.Error(ex);
@@ -102,31 +91,53 @@ namespace RestfulService.Handlers
 			}
 		}
 
-		private string CreateUriString(int artistId) {
-			return string.Format("{0}artist/{1}", _baseUrl, artistId);
-		}
-
 		[HttpOperation("DELETE")]
 		public OperationResult Delete(int artistId = 0) {
 			if (artistId <= 0)
-				return new OperationResult.BadRequest { Title = "ArtistId parameter should be given" };
-
-			
-
+				return CreateBadRequestResponse("ArtistId parameter should be supplied");
+				
 			try {
 				_writer.DeleteFile(artistId);
-
 				return new OperationResult.NoContent();
-
-			} catch (FileNotFoundException fex) {
+			} catch (FileNotFoundException) {
 				return new OperationResult.NotFound();
-			} catch (IOException iex) {
+			} catch (IOException) {
 				var uriString = CreateUriString(artistId);
 				return new OperationResult.MethodNotAllowed(new Uri(uriString), HttpVerb.DELETE.ToString(), artistId);
 			} catch (Exception ex) {
 				_log.Error(ex);
-				return new OperationResult.InternalServerError{StatusCode = 503};
+				return new OperationResult.InternalServerError{StatusCode = 503, Title="Service Unavailable"};
 			}
+		}
+
+		private static void ReMapArtist(Artist fromArtist, Artist toArtist)
+		{
+			if(!string.IsNullOrEmpty(fromArtist.Name))
+				toArtist.Name = fromArtist.Name;
+			if (!string.IsNullOrEmpty(fromArtist.Genre))
+				toArtist.Genre = fromArtist.Genre;
+		}
+
+		private static OperationResult.BadRequest CreateBadRequestResponse(string message)
+		{
+			return new OperationResult.BadRequest
+				{
+					Title = message,
+					Errors = new List<Error> { new Error { Title = message, Exception = new ArgumentException(), Message = message } }
+				};
+		}
+
+		private static OperationResult.BadRequest CreateBadRequestResponse(string title, IList<Error> errors)
+		{
+			return new OperationResult.BadRequest
+			{
+				Title = title,
+				Errors = errors 
+			};
+		}
+
+		private string CreateUriString(int artistId) {
+			return string.Format(URI_STRING_FORMAT, _baseUrl, artistId);
 		}
 	}
 }

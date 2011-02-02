@@ -1,16 +1,18 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using OpenRasta;
 using RestfulService.Resources;
 
 namespace RestfulService.Validation
 {
 	public class ArtistValidator : ISelfValidator<Artist>{
-		public IEnumerable<ValidationResponse> Validate(Artist item) {
+		public IEnumerable<Error> Validate(Artist item) {
 			if(item.Id <= 0)
-				yield return new ValidationResponse(1001, "ArtistId parameter missing");
+				yield return new Error{Title="ArtistId parameter missing", Message="ArtistId parameter missing",Exception=new ArgumentException()};
 			if (string.IsNullOrEmpty(item.Name))
-				yield return new ValidationResponse(1001, "Name parameter missing");
+				yield return new Error { Title = "Name parameter missing", Message = "Name parameter missing", Exception = new ArgumentException() };
 			if (string.IsNullOrEmpty(item.Genre))
-				yield return new ValidationResponse(1001, "Genre parameter missing");
+				yield return new Error { Title = "Genre parameter missing", Message = "Genre parameter missing", Exception = new ArgumentException() };
 			yield break;
 		}
 	}

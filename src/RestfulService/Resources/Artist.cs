@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using OpenRasta;
 using OpenRasta.Binding;
 using RestfulService.Validation;
 
@@ -13,7 +14,7 @@ namespace RestfulService.Resources
 		public string Name { get; set; }
 		public string Genre { get; set; }
 
-		public IEnumerable<ValidationResponse> GetErrors(ISelfValidator<Artist> validator) {
+		public IEnumerable<Error> GetErrors(ISelfValidator<Artist> validator) {
 			return validator.Validate(this);
 		}
 	}
