@@ -60,7 +60,7 @@ namespace RestfulService.Handlers
 
 			try {
 				_writer.CreateFile(artist);
-				return new OperationResult.Created { RedirectLocation = new Uri(uriString) };
+				return new OperationResult.Created { RedirectLocation = new Uri(uriString), ResponseResource = new ArtistResponse { Response = artist, Link = new Link("artist", uriString, HttpVerb.DELETE) } };
 			} catch (ResourceExistsException) {
 				return new OperationResult.Found { RedirectLocation = new Uri(uriString) };
 			} catch (Exception ex) {
