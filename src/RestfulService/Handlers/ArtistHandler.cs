@@ -95,7 +95,7 @@ namespace RestfulService.Handlers
 		public OperationResult Delete(int artistId = 0) {
 			if (artistId <= 0)
 				return CreateBadRequestResponse("ArtistId parameter should be supplied");
-				
+			
 			try {
 				_writer.DeleteFile(artistId);
 				return new OperationResult.NoContent();
@@ -106,7 +106,7 @@ namespace RestfulService.Handlers
 				return new OperationResult.MethodNotAllowed(new Uri(uriString), HttpVerb.DELETE.ToString(), artistId);
 			} catch (Exception ex) {
 				_log.Error(ex);
-				return new OperationResult.InternalServerError{StatusCode = 503, Title="Service Unavailable"};
+				return new ServiceUnavaiable();
 			}
 		}
 

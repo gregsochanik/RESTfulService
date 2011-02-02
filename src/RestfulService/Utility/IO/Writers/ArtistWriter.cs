@@ -43,8 +43,9 @@ namespace RestfulService.Utility.IO.Writers
 
 		public void DeleteFile(int id) {
 			string filePath = GetFilePath(id);
-			if (_fileWrapper.FileExists(filePath))
-				_fileWrapper.DeleteFile(filePath);
+			if (!_fileWrapper.FileExists(filePath))
+				throw new FileNotFoundException(string.Format("Artist {0} not found", id));
+			_fileWrapper.DeleteFile(filePath);
 		}
 
 		private string GetFilePath(int id) {
