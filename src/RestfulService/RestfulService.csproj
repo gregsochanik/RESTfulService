@@ -76,6 +76,7 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Authentication\OAuthAuthenticationScheme.cs" />
     <Compile Include="ConfigurationSource.cs" />
     <Compile Include="DependancyResolver.cs" />
     <Compile Include="Exceptions\ResourceExistsException.cs" />
