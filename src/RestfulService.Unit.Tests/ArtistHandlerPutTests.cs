@@ -31,7 +31,7 @@ namespace RestfulService.Unit.Tests
 		[Test]
 		public void Should_return_BadRequest_if_parameters_are_missing() {
 			var artistHandler = new ArtistHandler(_writer, _reader, new ArtistValidator());
-			var operationResult = artistHandler.Put(0, new Artist { Id = 0, Genre = "", Name = "" });
+			var operationResult = artistHandler.Put(new Artist { Id = 0, Genre = "", Name = "" });
 			Assert.That(operationResult.StatusCode, Is.EqualTo(400));
 			Assert.That(operationResult.Title, Is.EqualTo("ArtistId parameter should be supplied"));
 		}
@@ -40,7 +40,7 @@ namespace RestfulService.Unit.Tests
 		public void Should_return_InternalServerError_on_exception() {
 			_reader.Stub(x => x.ReadFromFile(0)).IgnoreArguments().Throw(new Exception());
 			var artistHandler = new ArtistHandler(_writer, _reader, new ArtistValidator());
-			var operationResult = artistHandler.Put(1, new Artist { Id = 1, Genre = "r", Name = "r" });
+			var operationResult = artistHandler.Put(new Artist { Id = 1, Genre = "r", Name = "r" }, 1);
 			Assert.That(operationResult.StatusCode, Is.EqualTo(500));
 		}
 
@@ -48,7 +48,7 @@ namespace RestfulService.Unit.Tests
 		public void Should_return_NotFound_with_incorrect_artist() {
 			_reader.Stub(x => x.ReadFromFile(0)).IgnoreArguments().Throw(new FileNotFoundException());
 			var artistHandler = new ArtistHandler(_writer, _reader, new ArtistValidator());
-			var operationResult = artistHandler.Put(1, new Artist { Id = 1, Genre = "r", Name = "r" });
+			var operationResult = artistHandler.Put(new Artist { Id = 1, Genre = "r", Name = "r" }, 1);
 			Assert.That(operationResult.StatusCode, Is.EqualTo(404));
 		}
 
@@ -57,7 +57,7 @@ namespace RestfulService.Unit.Tests
 			var artistHandler = new ArtistHandler(_writer, _reader, new ArtistValidator());
 			var artist = new Artist { Id = 1, Genre = "r", Name = "r" };
 			_reader.Stub(x => x.ReadFromFile(0)).IgnoreArguments().Return(artist);
-			var operationResult = artistHandler.Put(1, artist);
+			var operationResult = artistHandler.Put(artist, 1);
 			Assert.That(operationResult.StatusCode, Is.EqualTo(204));
 		}
 	}

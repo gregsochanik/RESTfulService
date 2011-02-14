@@ -5,9 +5,16 @@ using OpenRasta.Web;
 
 namespace RestfulService.Handlers {
 	[RequiresAuthentication]
-	//TODO - need to figure out how to bootstrap OAuthAuthentication as the default auth model
-	public class TrackDownloadHandler {
+	public class TrackDownloadHandler
+	{
+		private ICommunicationContext _context;
+		public TrackDownloadHandler(ICommunicationContext context) {
+			_context = context;
+		}
+
 		public IFile Get(int trackId = 1) {
+			string name = _context.User.Identity.Name;
+
 			var fs = File.OpenRead(string.Format("C:/artist/{0}.mp3", trackId));
 			return new InMemoryFile(fs)
 			{

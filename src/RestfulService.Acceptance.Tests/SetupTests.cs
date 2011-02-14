@@ -37,14 +37,14 @@ namespace RestfulService.Acceptance.Tests {
 			Console.WriteLine(output);
 			Assert.That(output, Is.Not.Null);
 
-			httpPostResolver = new HttpPostResolver(new WebClientFactory(), "Id=100001&Name=TEST2&Genre=Rock");
+			httpPostResolver = new HttpPostResolver(new WebClientFactory(), "Name=TEST2&Genre=Rock");
 			webHeaderCollection = new WebHeaderCollection
 			{
 				{"Accept", "*/*"},
 				{"Content-Type", "application/x-www-form-urlencoded"}
 			};
 
-			output = httpPostResolver.Resolve(new Uri(url + "/artist"), "PUT", webHeaderCollection);
+			output = httpPostResolver.Resolve(new Uri(url + "/artist/100001"), "PUT", webHeaderCollection);
 
 			Console.WriteLine(output);
 			Assert.That(output, Is.Not.Null);
