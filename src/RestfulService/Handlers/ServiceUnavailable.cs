@@ -2,7 +2,7 @@
 
 namespace RestfulService.Handlers
 {
-	public class ServiceUnavaiable : OperationResult
+	public class ServiceUnavailable : OperationResult
 	{
 		public override int StatusCode {
 			get {

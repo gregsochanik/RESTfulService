@@ -1,8 +1,10 @@
 ﻿using Castle.MicroKernel.Registration;
 using Castle.Windsor;
 using Castle.Windsor.Configuration.Interpreters;
+using OpenRasta.Authentication;
 using OpenRasta.DI;
 using OpenRasta.DI.Windsor;
+using RestfulService.Authentication;
 
 namespace RestfulService
 {

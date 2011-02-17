@@ -70,7 +70,7 @@ namespace RestfulService.Handlers
 		}
 
 		[HttpOperation("PUT")]
-		public OperationResult Put(int artistId, Artist artist) {
+		public OperationResult Put(Artist artist, int artistId = -1) {
 			if (artistId <= 0)
 				return CreateBadRequestResponse("ArtistId parameter should be supplied");
 
@@ -106,7 +106,7 @@ namespace RestfulService.Handlers
 				return new OperationResult.MethodNotAllowed(new Uri(uriString), HttpVerb.DELETE.ToString(), artistId);
 			} catch (Exception ex) {
 				_log.Error(ex);
-				return new ServiceUnavaiable();
+				return new ServiceUnavailable();
 			}
 		}
 

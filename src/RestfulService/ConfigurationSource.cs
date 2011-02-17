@@ -1,6 +1,11 @@
-﻿using OpenRasta.Configuration;
+﻿using OpenRasta.Authentication;
+using OpenRasta.Authentication.Basic;
+using OpenRasta.Configuration;
+using OpenRasta.Configuration.Fluent;
+using OpenRasta.DI;
 using OpenRasta.IO;
 using OpenRasta.Web;
+using RestfulService.Authentication;
 using RestfulService.Handlers;
 using RestfulService.Resources;
 
@@ -9,6 +14,9 @@ namespace RestfulService
 	public class ConfigurationSource : IConfigurationSource{
 		public void Configure(){
 			using (OpenRastaConfiguration.Manual) {
+
+				ResourceSpace.Uses.OAuthAuthentication<OAuthAuthenticator>();
+
 				ResourceSpace.Has
 					.ResourcesOfType<HomeResponse>()
 					.AtUri("/home")
@@ -32,6 +40,14 @@ namespace RestfulService
 					.HandledBy<TrackDownloadHandler>();
 
 			}
+		}
+	}
+
+	public static class ExtensionsToIUses {
+		public static void OAuthAuthentication<TBasicAuthenticator>(this IUses uses) where TBasicAuthenticator : class, IBasicAuthenticator {
+			uses.CustomDependency<IAuthenticationScheme, OAuthAuthenticationScheme>(DependencyLifetime.Transient);
+
+			uses.CustomDependency<IBasicAuthenticator, TBasicAuthenticator>(DependencyLifetime.Transient);
 		}
 	}
 }

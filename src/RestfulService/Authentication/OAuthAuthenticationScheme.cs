@@ -1,6 +1,7 @@
 ﻿using System;
 using OpenRasta;
 using OpenRasta.Authentication;
+using OpenRasta.Authentication.Basic;
 using OpenRasta.Web;
 
 namespace RestfulService.Authentication
@@ -45,8 +46,25 @@ namespace RestfulService.Authentication
 		} 
 	}
 
+
+	/// <summary>
+	/// https://github.com/openrasta/openrasta-stable/pull/2
+	/// </summary>
 	public class OAuthRequestHeader
 	{
 		// TODO - this is where you store the credentials?
+	}
+
+	public class OAuthAuthenticator : IBasicAuthenticator
+	{
+		public AuthenticationResult Authenticate(BasicAuthRequestHeader header) {
+			throw new NotImplementedException();
+		}
+
+		public string Realm {
+			get {
+				return "OAuth";
+			}
+		}
 	}
 }
