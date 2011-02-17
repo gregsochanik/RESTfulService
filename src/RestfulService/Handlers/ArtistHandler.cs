@@ -52,7 +52,7 @@ namespace RestfulService.Handlers
 
 		[HttpOperation("POST")]
 		public OperationResult Post(Artist artist) {
-			var errors = artist.GetErrors(_artistValidator);
+			var errors = _artistValidator.Validate(artist);
 			if (errors.Count() > 0)
 				return CreateBadRequestResponse("ArtistId parameter should be supplied", errors.ToList());
 
