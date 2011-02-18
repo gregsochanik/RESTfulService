@@ -14,9 +14,6 @@ namespace RestfulService.Resources
 		public string Name { get; set; }
 		public string Genre { get; set; }
 
-		public IEnumerable<Error> GetErrors(ISelfValidator<Artist> validator) {
-			return validator.Validate(this);
-		}
 	}
 
 	public interface IHasId

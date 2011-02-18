@@ -7,7 +7,6 @@ using RestfulService.Utility.IO;
 using RestfulService.Utility.IO.Readers;
 using RestfulService.Utility.IO.Writers;
 using RestfulService.Utility.Serialization;
-using RestfulService.Validation;
 using Rhino.Mocks;
 
 namespace RestfulService.Unit.Tests
@@ -28,36 +27,29 @@ namespace RestfulService.Unit.Tests
 			_writer = MockRepository.GenerateStub<IWriter<Artist>>();
 		}
 
-		[Test]
-		public void Should_return_BadRequest_if_parameters_are_missing() {
-			var artistHandler = new ArtistHandler(_writer, _reader, new ArtistValidator());
-			var operationResult = artistHandler.Put(new Artist { Id = 0, Genre = "", Name = "" });
-			Assert.That(operationResult.StatusCode, Is.EqualTo(400));
-			Assert.That(operationResult.Title, Is.EqualTo("ArtistId parameter should be supplied"));
-		}
 
 		[Test]
 		public void Should_return_InternalServerError_on_exception() {
 			_reader.Stub(x => x.ReadFromFile(0)).IgnoreArguments().Throw(new Exception());
-			var artistHandler = new ArtistHandler(_writer, _reader, new ArtistValidator());
-			var operationResult = artistHandler.Put(new Artist { Id = 1, Genre = "r", Name = "r" }, 1);
+			var artistHandler = new ArtistHandler(_writer, _reader);
+			var operationResult = artistHandler.Put(1, new Artist { Id = 1, Genre = "r", Name = "r" });
 			Assert.That(operationResult.StatusCode, Is.EqualTo(500));
 		}
 
 		[Test]
 		public void Should_return_NotFound_with_incorrect_artist() {
 			_reader.Stub(x => x.ReadFromFile(0)).IgnoreArguments().Throw(new FileNotFoundException());
-			var artistHandler = new ArtistHandler(_writer, _reader, new ArtistValidator());
-			var operationResult = artistHandler.Put(new Artist { Id = 1, Genre = "r", Name = "r" }, 1);
+			var artistHandler = new ArtistHandler(_writer, _reader);
+			var operationResult = artistHandler.Put(1, new Artist { Id = 1, Genre = "r", Name = "r" });
 			Assert.That(operationResult.StatusCode, Is.EqualTo(404));
 		}
 
 		[Test]
 		public void Should_return_NoContent_on_successful_update() {
-			var artistHandler = new ArtistHandler(_writer, _reader, new ArtistValidator());
+			var artistHandler = new ArtistHandler(_writer, _reader);
 			var artist = new Artist { Id = 1, Genre = "r", Name = "r" };
 			_reader.Stub(x => x.ReadFromFile(0)).IgnoreArguments().Return(artist);
-			var operationResult = artistHandler.Put(artist, 1);
+			var operationResult = artistHandler.Put(1, artist);
 			Assert.That(operationResult.StatusCode, Is.EqualTo(204));
 		}
 	}

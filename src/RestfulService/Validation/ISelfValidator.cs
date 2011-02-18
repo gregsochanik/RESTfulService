@@ -3,8 +3,11 @@ using OpenRasta;
 
 namespace RestfulService.Validation
 {
-	public interface ISelfValidator<T>
+	public interface ISelfValidator<T> :ISelfValidator
+	{}
+
+	public interface ISelfValidator
 	{
-		IEnumerable<Error> Validate(T item);
+		IEnumerable<Error> Validate(object item);
 	}
 }

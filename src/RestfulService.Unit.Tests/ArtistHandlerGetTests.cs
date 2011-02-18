@@ -6,7 +6,6 @@ using RestfulService.Utility.IO;
 using RestfulService.Utility.IO.Readers;
 using RestfulService.Utility.IO.Writers;
 using RestfulService.Utility.Serialization;
-using RestfulService.Validation;
 using Rhino.Mocks;
 
 namespace RestfulService.Unit.Tests {
@@ -30,23 +29,15 @@ namespace RestfulService.Unit.Tests {
 		[Test]
 		public void Get_should_return_NotFound_with_incorrect_artist() {
 			_fileWrapper.Stub(x => x.FileExists("")).IgnoreArguments().Return(false);
-			var artistHandler = new ArtistHandler(_writer, _reader, new ArtistValidator());
+			var artistHandler = new ArtistHandler(_writer, _reader);
 			var operationResult = artistHandler.Get(1);
 			Assert.That(operationResult.StatusCode, Is.EqualTo(404));
 		}
 
 		[Test]
-		public void Get_should_return_bad_request_if_no_id_supplied() {
-			var artistHandler = new ArtistHandler(_writer, _reader, new ArtistValidator());
-			var operationResult = artistHandler.Get();
-			Assert.That(operationResult.StatusCode, Is.EqualTo(400));
-			Assert.That(operationResult.Title, Is.EqualTo("ArtistId parameter should be supplied"));
-		}
-
-		[Test]
 		public void Get_should_return_InternalServerError_on_exception() {
 			_fileWrapper.Stub(x => x.FileExists("")).IgnoreArguments().Throw(new Exception());
-			var artistHandler = new ArtistHandler(_writer, _reader,  new ArtistValidator());
+			var artistHandler = new ArtistHandler(_writer, _reader);
 			var operationResult = artistHandler.Get(1);
 			Assert.That(operationResult.StatusCode, Is.EqualTo(500));
 		}
@@ -57,7 +48,7 @@ namespace RestfulService.Unit.Tests {
 			reader.Stub(x => x.ReadFromFile(0)).IgnoreArguments().Return(new Artist());
 			_fileWrapper.Stub(x => x.FileExists("")).IgnoreArguments().Return(true);
 
-			var artistHandler = new ArtistHandler(_writer, reader, new ArtistValidator());
+			var artistHandler = new ArtistHandler(_writer, reader);
 			var operationResult = artistHandler.Get(1);
 			Assert.That(operationResult.StatusCode, Is.EqualTo(200));
 		}
@@ -71,13 +62,13 @@ namespace RestfulService.Unit.Tests {
 			reader.Stub(x => x.ReadFromFile(artistId)).IgnoreArguments().Return(new Artist { Id = artistId, Genre = expectedGenre, Name = expected });
 			_fileWrapper.Stub(x => x.FileExists("")).IgnoreArguments().Return(true);
 
-			var artistHandler = new ArtistHandler(_writer, reader, new ArtistValidator());
+			var artistHandler = new ArtistHandler(_writer, reader);
 			var operationResult = artistHandler.Get(artistId);
 			Assert.That(operationResult.StatusCode, Is.EqualTo(200));
 			Assert.That(operationResult.ResponseResource, Is.Not.Null);
-			Assert.That(((ArtistResponse)operationResult.ResponseResource).Response.Name, Is.EqualTo(expected));
-			Assert.That(((ArtistResponse)operationResult.ResponseResource).Response.Id, Is.EqualTo(artistId));
-			Assert.That(((ArtistResponse)operationResult.ResponseResource).Response.Genre, Is.EqualTo(expectedGenre));
+			Assert.That(((Artist)operationResult.ResponseResource).Name, Is.EqualTo(expected));
+			Assert.That(((Artist)operationResult.ResponseResource).Id, Is.EqualTo(artistId));
+			Assert.That(((Artist)operationResult.ResponseResource).Genre, Is.EqualTo(expectedGenre));
 		}
 	}
 }

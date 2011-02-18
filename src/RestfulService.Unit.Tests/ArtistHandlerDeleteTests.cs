@@ -7,7 +7,6 @@ using RestfulService.Utility.IO;
 using RestfulService.Utility.IO.Readers;
 using RestfulService.Utility.IO.Writers;
 using RestfulService.Utility.Serialization;
-using RestfulService.Validation;
 using Rhino.Mocks;
 
 namespace RestfulService.Unit.Tests
@@ -29,16 +28,9 @@ namespace RestfulService.Unit.Tests
 		}
 
 		[Test]
-		public void Get_should_return_bad_request_if_no_id_supplied() {
-			var artistHandler = new ArtistHandler(_writer, _reader, new ArtistValidator());
-			var operationResult = artistHandler.Delete(0);
-			Assert.That(operationResult.StatusCode, Is.EqualTo(400));
-		}
-
-		[Test]
 		public void Should_return_NotAvailable_on_exception() {
 			_writer.Stub(x => x.DeleteFile(1)).IgnoreArguments().Throw(new Exception());
-			var artistHandler = new ArtistHandler(_writer, _reader, new ArtistValidator());
+			var artistHandler = new ArtistHandler(_writer, _reader);
 			var operationResult = artistHandler.Delete(1);
 			Assert.That(operationResult.StatusCode, Is.EqualTo(503));
 		}
@@ -46,14 +38,14 @@ namespace RestfulService.Unit.Tests
 		[Test]
 		public void Should_return_NotFound_with_incorrect_artist() {
 			_writer.Stub(x => x.DeleteFile(0)).IgnoreArguments().Throw(new FileNotFoundException());
-			var artistHandler = new ArtistHandler(_writer, _reader, new ArtistValidator());
+			var artistHandler = new ArtistHandler(_writer, _reader);
 			var operationResult = artistHandler.Delete(1);
 			Assert.That(operationResult.StatusCode, Is.EqualTo(404));
 		}
 
 		[Test]
 		public void Should_return_NoContent_on_successful_delete() {
-			var artistHandler = new ArtistHandler(_writer, _reader, new ArtistValidator());
+			var artistHandler = new ArtistHandler(_writer, _reader);
 			var operationResult = artistHandler.Delete(1);
 			Assert.That(operationResult.StatusCode, Is.EqualTo(204));
 		}

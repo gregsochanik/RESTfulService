@@ -25,7 +25,7 @@ namespace RestfulService
 					.AsJsonDataContract().ForMediaType(MediaType.Json);
 
 				ResourceSpace.Has
-					.ResourcesOfType<ArtistResponse>()
+					.ResourcesOfType<Artist>()
 					.AtUri("/artist").And
 					.AtUri("/artist/{artistId}")
 					.HandledBy<ArtistHandler>()
