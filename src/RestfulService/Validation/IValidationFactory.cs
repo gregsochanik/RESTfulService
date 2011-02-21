@@ -1,4 +1,6 @@
-﻿namespace RestfulService.Validation
+﻿using RestfulService.Resources;
+
+namespace RestfulService.Validation
 {
 	public interface IValidationFactory<T>
 	{

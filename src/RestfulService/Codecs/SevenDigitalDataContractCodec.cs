@@ -29,26 +29,30 @@ namespace RestfulService.Codecs {
 				xmlTextWriter.WriteAttributeString("xmlns", "xsd", "", "http://www.w3.org/2001/XMLSchema");
 				xmlTextWriter.WriteAttributeString("xmlns", "xsi", "", "http://www.w3.org/2001/XMLSchema-instance");
 
-				OutputEntity(entity, response, isError, xmlTextWriter);
+				if (!isError)
+					OutputEntity(entity, xmlTextWriter);
+				else
+					OutputError(response, xmlTextWriter);
 				
 				xmlTextWriter.WriteEndElement();
 			}
 		}
 
-		private static void OutputEntity(object entity, IHttpEntity response, bool isError, XmlWriter xmlTextWriter) {
-			if (!isError) {
-				var x = new XmlSerializer(entity.GetType());
-				x.Serialize(xmlTextWriter, entity);
-			} else {
-				xmlTextWriter.WriteStartElement("error", "");
-				foreach (var error in response.Errors) {
-					xmlTextWriter.WriteStartElement("errorMessage");
-					xmlTextWriter.WriteAttributeString("code", "1001");
-					xmlTextWriter.WriteString(error.Message);
-					xmlTextWriter.WriteEndElement();
-				}
+		private static void OutputEntity(object entity, XmlWriter xmlTextWriter) {
+			var x = new XmlSerializer(entity.GetType());
+			x.Serialize(xmlTextWriter, entity);
+		}
+
+		private static void OutputError(IHttpEntity response, XmlWriter xmlTextWriter) {
+			xmlTextWriter.WriteStartElement("error", "");
+			foreach (var error in response.Errors) {
+				xmlTextWriter.WriteStartElement("errorMessage");
+				xmlTextWriter.WriteAttributeString("code", "1001");
+				xmlTextWriter.WriteString(error.Message);
 				xmlTextWriter.WriteEndElement();
 			}
+			xmlTextWriter.WriteEndElement();
 		}
+
 	}
 }

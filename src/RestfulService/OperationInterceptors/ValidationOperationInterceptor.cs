@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using OpenRasta.Binding;
 using OpenRasta.DI;
 using OpenRasta.OperationModel;
@@ -41,7 +42,7 @@ namespace RestfulService.OperationInterceptors
 						};
 						return false;
 					}
-				} catch (Exception) {}
+				} catch (Exception ex) {}
 			}
 			return true;
 		}
@@ -50,8 +51,7 @@ namespace RestfulService.OperationInterceptors
 			var validationFactory =
 				typeof (IValidationFactory<>).MakeGenericType(parameter.Instance.GetType());
 
-			var resolve = _resolver.Resolve(validationFactory) as IValidationFactory<Artist>; // TODO - H-ugly, sort this bit out
-
+			var resolve = _resolver.Resolve(validationFactory) as IValidationFactory<Artist>;
 			return resolve.GetValidator(_context.Request.HttpMethod);
 		}
 

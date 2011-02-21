@@ -95,6 +95,9 @@
     <Compile Include="Resources\ArtistResponse.cs" />
     <Compile Include="Resources\HomeResponse.cs" />
     <Compile Include="Resources\Response.cs" />
+    <Compile Include="Result.cs" />
+    <Compile Include="SearchHandler.cs" />
+    <Compile Include="SearchResource.cs" />
     <Compile Include="Utility\IO\FileWrapper.cs" />
     <Compile Include="Utility\IO\IFileWrapper.cs" />
     <Compile Include="Utility\IO\Readers\ArtistReader.cs" />
@@ -108,7 +111,6 @@
     <Compile Include="Validation\ArtistValidationFactory.cs" />
     <Compile Include="Validation\ISelfValidator.cs" />
     <Compile Include="Validation\IValidationFactory.cs" />
-    <Compile Include="Validation\ValidationResponse.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
