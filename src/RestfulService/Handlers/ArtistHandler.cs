@@ -5,6 +5,7 @@ using System.Reflection;
 using log4net;
 using OpenRasta.Web;
 using RestfulService.Exceptions;
+using RestfulService.OperationResults;
 using RestfulService.Resources;
 using RestfulService.Utility.IO.Readers;
 using RestfulService.Utility.IO.Writers;
