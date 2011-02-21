@@ -77,6 +77,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Authentication\OAuthAuthenticationScheme.cs" />
+    <Compile Include="Codecs\SevenDigitalDataContractCodec.cs" />
     <Compile Include="ConfigurationSource.cs" />
     <Compile Include="DependancyResolver.cs" />
     <Compile Include="Exceptions\ResourceExistsException.cs" />
@@ -102,8 +103,11 @@
     <Compile Include="Utility\IO\Writers\IWriter.cs" />
     <Compile Include="Utility\Serialization\ISerializer.cs" />
     <Compile Include="Utility\Serialization\XmlSerializer.cs" />
+    <Compile Include="Validation\ArtistGetValidator.cs" />
     <Compile Include="Validation\ArtistPostValidator.cs" />
+    <Compile Include="Validation\ArtistValidationFactory.cs" />
     <Compile Include="Validation\ISelfValidator.cs" />
+    <Compile Include="Validation\IValidationFactory.cs" />
     <Compile Include="Validation\ValidationResponse.cs" />
   </ItemGroup>
   <ItemGroup />

@@ -28,7 +28,6 @@ namespace RestfulService.Handlers
 		public OperationResult Get(Artist artist) {
 
 			try {
-				//var artist = _reader.ReadFromFile(artist.Id);
 				Artist fromFile = _reader.ReadFromFile(artist.Id);
 				return new OperationResult.OK(fromFile);
 			}

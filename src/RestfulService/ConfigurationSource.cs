@@ -6,6 +6,7 @@ using OpenRasta.DI;
 using OpenRasta.IO;
 using OpenRasta.Web;
 using RestfulService.Authentication;
+using RestfulService.Codecs;
 using RestfulService.Handlers;
 using RestfulService.Resources;
 
@@ -28,8 +29,9 @@ namespace RestfulService
 					.ResourcesOfType<Artist>()
 					.AtUri("/artist").And
 					.AtUri("/artist/{Id}")
-					.HandledBy<ArtistHandler>()
-					.AsXmlSerializer().ForMediaType(new MediaType("text/xml")).ForMediaType(MediaType.Xml)
+					.HandledBy<ArtistHandler>().TranscodedBy(typeof(SevenDigitalDataContractCodec))
+					.ForMediaType("application/vnd.7digital+xml")
+					.ForMediaType(new MediaType("text/xml")).ForMediaType(MediaType.Xml)
 					.And
 					.AsJsonDataContract().ForMediaType(MediaType.Json);
 				
