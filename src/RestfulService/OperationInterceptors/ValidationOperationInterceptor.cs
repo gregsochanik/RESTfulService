@@ -6,6 +6,7 @@ using OpenRasta.DI;
 using OpenRasta.OperationModel;
 using OpenRasta.OperationModel.Interceptors;
 using OpenRasta.Web;
+using RestfulService.Resources;
 using RestfulService.Validation;
 
 namespace RestfulService.OperationInterceptors
@@ -21,34 +22,37 @@ namespace RestfulService.OperationInterceptors
 		}
 
 		public bool BeforeExecute(IOperation operation) {
-			var input = operation.Inputs.FirstOrDefault();
 
-			if (input == null)
-				return true;
+			foreach (var input in operation.Inputs) {
+				if (input == null)
+					continue;
 
-			var parameter = input.Binder.BuildObject();
+				var parameter = input.Binder.BuildObject();
 
-			try {
+				try {
+					ISelfValidator validator = ResolveValidator(parameter);
 
-				ISelfValidator validator = ResolveValidator(parameter);
+					var errors = validator.Validate(parameter.Instance).ToList();
 
-				var errors = validator.Validate(parameter.Instance);
-
-				if (errors.Count() < 1)
-					return true;
-
-				_context.OperationResult = new OperationResult.BadRequest
-				{ResponseResource = parameter.Instance, Errors = errors.ToList()};
-
-				return false;
-			} catch(Exception) {
-				return true;
+					if (errors.Count > 0) {
+						_context.OperationResult = new OperationResult.BadRequest {
+							ResponseResource = parameter.Instance,
+							Errors = errors
+						};
+						return false;
+					}
+				} catch (Exception) {}
 			}
+			return true;
 		}
 
 		private ISelfValidator ResolveValidator(BindingResult parameter) {
-			var validatorType = typeof (ISelfValidator<>).MakeGenericType(parameter.Instance.GetType());
-			return _resolver.Resolve(validatorType) as ISelfValidator;
+			var validationFactory =
+				typeof (IValidationFactory<>).MakeGenericType(parameter.Instance.GetType());
+
+			var resolve = _resolver.Resolve(validationFactory) as IValidationFactory<Artist>; // TODO - H-ugly, sort this bit out
+
+			return resolve.GetValidator(_context.Request.HttpMethod);
 		}
 
 		public bool AfterExecute(IOperation operation, IEnumerable<OutputMember> outputMembers) {

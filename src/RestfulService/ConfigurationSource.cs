@@ -27,12 +27,12 @@ namespace RestfulService
 				ResourceSpace.Has
 					.ResourcesOfType<Artist>()
 					.AtUri("/artist").And
-					.AtUri("/artist/{artistId}")
+					.AtUri("/artist/{Id}")
 					.HandledBy<ArtistHandler>()
 					.AsXmlSerializer().ForMediaType(new MediaType("text/xml")).ForMediaType(MediaType.Xml)
 					.And
 					.AsJsonDataContract().ForMediaType(MediaType.Json);
-
+				
 				ResourceSpace.Has
 					.ResourcesOfType<IFile>()
 					.AtUri("/download").And

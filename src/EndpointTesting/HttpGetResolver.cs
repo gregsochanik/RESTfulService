@@ -10,6 +10,7 @@ namespace EndpointTesting {
 		// TODO: need to use abstractions that - already used on github
 		public string Resolve(Uri endpoint, string method, WebHeaderCollection headers) {
 			var webRequest = (HttpWebRequest)WebRequest.Create(endpoint.ToString());
+			webRequest.Method = method;
 			webRequest.Headers.Add(headers);
 			var webResponse = webRequest.GetResponse();
 			string output;

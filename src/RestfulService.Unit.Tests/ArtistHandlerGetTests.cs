@@ -30,7 +30,7 @@ namespace RestfulService.Unit.Tests {
 		public void Get_should_return_NotFound_with_incorrect_artist() {
 			_fileWrapper.Stub(x => x.FileExists("")).IgnoreArguments().Return(false);
 			var artistHandler = new ArtistHandler(_writer, _reader);
-			var operationResult = artistHandler.Get(1);
+			var operationResult = artistHandler.Get(new Artist { Id = 1 });
 			Assert.That(operationResult.StatusCode, Is.EqualTo(404));
 		}
 
@@ -38,7 +38,7 @@ namespace RestfulService.Unit.Tests {
 		public void Get_should_return_InternalServerError_on_exception() {
 			_fileWrapper.Stub(x => x.FileExists("")).IgnoreArguments().Throw(new Exception());
 			var artistHandler = new ArtistHandler(_writer, _reader);
-			var operationResult = artistHandler.Get(1);
+			var operationResult = artistHandler.Get(new Artist { Id = 1 });
 			Assert.That(operationResult.StatusCode, Is.EqualTo(500));
 		}
 
@@ -49,7 +49,7 @@ namespace RestfulService.Unit.Tests {
 			_fileWrapper.Stub(x => x.FileExists("")).IgnoreArguments().Return(true);
 
 			var artistHandler = new ArtistHandler(_writer, reader);
-			var operationResult = artistHandler.Get(1);
+			var operationResult = artistHandler.Get(new Artist{Id=1});
 			Assert.That(operationResult.StatusCode, Is.EqualTo(200));
 		}
 
@@ -63,7 +63,7 @@ namespace RestfulService.Unit.Tests {
 			_fileWrapper.Stub(x => x.FileExists("")).IgnoreArguments().Return(true);
 
 			var artistHandler = new ArtistHandler(_writer, reader);
-			var operationResult = artistHandler.Get(artistId);
+			var operationResult = artistHandler.Get(new Artist { Id = 1 });
 			Assert.That(operationResult.StatusCode, Is.EqualTo(200));
 			Assert.That(operationResult.ResponseResource, Is.Not.Null);
 			Assert.That(((Artist)operationResult.ResponseResource).Name, Is.EqualTo(expected));

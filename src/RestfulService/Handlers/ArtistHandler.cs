@@ -25,14 +25,15 @@ namespace RestfulService.Handlers
 		}
 
 		[HttpOperation("GET")]
-		public OperationResult Get(int artistId = 0) {
+		public OperationResult Get(Artist artist) {
 
 			try {
-				var artist = _reader.ReadFromFile(artistId);
-				return new OperationResult.OK(artist);
-
-			} catch (FileNotFoundException) {
-				return new OperationResult.NotFound { Description = String.Format("Artist {0} not found", artistId) };
+				//var artist = _reader.ReadFromFile(artist.Id);
+				Artist fromFile = _reader.ReadFromFile(artist.Id);
+				return new OperationResult.OK(fromFile);
+			}
+			catch (FileNotFoundException) {
+				return new OperationResult.NotFound { Description = String.Format("Artist {0} not found", artist.Id) };
 			}
 			catch (Exception ex) {
 				_log.Error(ex);
@@ -57,16 +58,16 @@ namespace RestfulService.Handlers
 		}
 
 		[HttpOperation("PUT")]
-		public OperationResult Put(int artistId, Artist artist) {
+		public OperationResult Put(Artist artist) {
 
 			try {
-				var artistToUpdate = _reader.ReadFromFile(artistId);
+				var artistToUpdate = _reader.ReadFromFile(artist.Id);
 				ReMapArtist(artist, artistToUpdate);
 
 				_writer.UpdateFile(artistToUpdate);
 				var uriString = CreateUriString(artistToUpdate.Id);
-				
-				return new OperationResult.NoContent { RedirectLocation = new Uri(uriString) };
+
+				return new OperationResult.NoContent { ResponseResource = artistToUpdate, RedirectLocation = new Uri(uriString) };
 
 			} catch (FileNotFoundException) {
 				return new OperationResult.NotFound();
@@ -77,24 +78,23 @@ namespace RestfulService.Handlers
 		}
 
 		[HttpOperation("DELETE")]
-		public OperationResult Delete(int artistId = 0) {
+		public OperationResult Delete(Artist artist) {
 			
 			try {
-				_writer.DeleteFile(artistId);
+				_writer.DeleteFile(artist.Id);
 				return new OperationResult.NoContent();
 			} catch (FileNotFoundException) {
 				return new OperationResult.NotFound();
 			} catch (IOException) {
-				var uriString = CreateUriString(artistId);
-				return new OperationResult.MethodNotAllowed(new Uri(uriString), HttpVerb.DELETE.ToString(), artistId);
+				var uriString = CreateUriString(artist.Id);
+				return new OperationResult.MethodNotAllowed(new Uri(uriString), HttpVerb.DELETE.ToString(), artist.Id);
 			} catch (Exception ex) {
 				_log.Error(ex);
 				return new ServiceUnavailable();
 			}
 		}
 
-		private static void ReMapArtist(Artist fromArtist, Artist toArtist)
-		{
+		private static void ReMapArtist(Artist fromArtist, Artist toArtist) {
 			if(!string.IsNullOrEmpty(fromArtist.Name))
 				toArtist.Name = fromArtist.Name;
 			if (!string.IsNullOrEmpty(fromArtist.Genre))

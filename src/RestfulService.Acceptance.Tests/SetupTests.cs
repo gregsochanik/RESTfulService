@@ -38,24 +38,11 @@ namespace RestfulService.Acceptance.Tests {
 			Assert.That(output, Is.Not.Null);
 
 			httpPostResolver = new HttpPostResolver(new WebClientFactory(), "Name=TEST2&Genre=Rock");
-			webHeaderCollection = new WebHeaderCollection
-			{
-				{"Accept", "*/*"},
-				{"Content-Type", "application/x-www-form-urlencoded"}
-			};
 
 			output = httpPostResolver.Resolve(new Uri(url + "/artist/100001"), "PUT", webHeaderCollection);
 
 			Console.WriteLine(output);
 			Assert.That(output, Is.Not.Null);
-
-			var httpGetResolver = new HttpGetResolver();
-
-			output = httpGetResolver.Resolve(new Uri(url + "/artist/100001"), "DELETE", new WebHeaderCollection());
-
-			Console.WriteLine(output);
-			Assert.That(output, Is.Not.Null);
-
 		}
 
 		[Test]
