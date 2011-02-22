@@ -8,6 +8,6 @@ namespace RestfulService.Validation
 
 	public interface ISelfValidator
 	{
-		IEnumerable<Error> Validate(object item);
+		IEnumerable<Error> Validate(object item, string httpMethod);
 	}
 }

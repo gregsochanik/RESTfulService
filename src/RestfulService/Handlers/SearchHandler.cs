@@ -7,6 +7,12 @@ namespace RestfulService.Handlers
 	public class SearchHandler
 	{
 		public OperationResult Get(SearchResource resource) {
+			GetSearch(resource);
+			return new OperationResult.OK(resource);
+		}
+
+
+		private static void GetSearch(SearchResource resource) {
 			var results = new List<Result>
 			{
 				new Result
@@ -24,8 +30,6 @@ namespace RestfulService.Handlers
 			};
 			resource.TotalItems = 2;
 			resource.SearchResults = results;
-
-			return new OperationResult.OK(resource);
 		}
 	}
 }

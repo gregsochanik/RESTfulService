@@ -24,7 +24,6 @@ namespace RestfulService.Resources
 		[XmlElement("genre")]
 		[DataMember(Name = "genre")]
 		public string Genre { get; set; }
-
 	}
 
 	public interface IHasId

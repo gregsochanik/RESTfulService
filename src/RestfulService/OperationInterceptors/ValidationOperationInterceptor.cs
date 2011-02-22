@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using OpenRasta.Binding;
 using OpenRasta.DI;
 using OpenRasta.OperationModel;
@@ -33,7 +32,7 @@ namespace RestfulService.OperationInterceptors
 				try {
 					ISelfValidator validator = ResolveValidator(parameter);
 
-					var errors = validator.Validate(parameter.Instance).ToList();
+					var errors = validator.Validate(parameter.Instance, _context.Request.HttpMethod).ToList();
 
 					if (errors.Count > 0) {
 						_context.OperationResult = new OperationResult.BadRequest {
@@ -48,11 +47,15 @@ namespace RestfulService.OperationInterceptors
 		}
 
 		private ISelfValidator ResolveValidator(BindingResult parameter) {
-			var validationFactory =
-				typeof (IValidationFactory<>).MakeGenericType(parameter.Instance.GetType());
+			//var validationFactory =
+			//    typeof (IValidationFactory<>).MakeGenericType(parameter.Instance.GetType());
 
-			var resolve = _resolver.Resolve(validationFactory) as IValidationFactory<Artist>;
-			return resolve.GetValidator(_context.Request.HttpMethod);
+			//var resolve = _resolver.Resolve(validationFactory) as IValidationFactory<Artist>;
+			//return resolve.GetValidator(_context.Request.HttpMethod);
+
+			Type validatorType = typeof(ISelfValidator<>).MakeGenericType(parameter.Instance.GetType());
+
+			return _resolver.Resolve(validatorType) as ISelfValidator;
 		}
 
 		public bool AfterExecute(IOperation operation, IEnumerable<OutputMember> outputMembers) {

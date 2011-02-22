@@ -107,8 +107,7 @@
     <Compile Include="Utility\IO\Writers\IWriter.cs" />
     <Compile Include="Utility\Serialization\ISerializer.cs" />
     <Compile Include="Utility\Serialization\XmlSerializer.cs" />
-    <Compile Include="Validation\ArtistGetValidator.cs" />
-    <Compile Include="Validation\ArtistPostValidator.cs" />
+    <Compile Include="Validation\ArtistValidator.cs" />
     <Compile Include="Validation\ArtistValidationFactory.cs" />
     <Compile Include="Validation\ISelfValidator.cs" />
     <Compile Include="Validation\IValidationFactory.cs" />
