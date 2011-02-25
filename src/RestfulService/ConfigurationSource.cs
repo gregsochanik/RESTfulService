@@ -15,9 +15,6 @@ namespace RestfulService
 	public class ConfigurationSource : IConfigurationSource{
 		public void Configure(){
 			using (OpenRastaConfiguration.Manual) {
-
-				ResourceSpace.Uses.OAuthAuthentication<OAuthAuthenticator>();
-
 				ResourceSpace.Has
 					.ResourcesOfType<HomeResource>()
 					.AtUri("/home")
@@ -35,7 +32,7 @@ namespace RestfulService
 					.ForMediaType(new MediaType("text/xml")).ForMediaType(MediaType.Xml)
 					.And
 					.AsJsonDataContract().ForMediaType(MediaType.Json);
-				
+
 				ResourceSpace.Has
 					.ResourcesOfType<IFile>()
 					.AtUri("/download").And
@@ -52,7 +49,9 @@ namespace RestfulService
 					.ForMediaType("application/vnd.7digital+xml")
 					.ForMediaType(new MediaType("text/xml")).ForMediaType(MediaType.Xml)
 					.And
-					.AsJsonDataContract().ForMediaType(MediaType.Json); 
+					.AsJsonDataContract().ForMediaType(MediaType.Json);
+
+				ResourceSpace.Uses.OAuthAuthentication<OAuthAuthenticator>();
 			}
 		}
 	}

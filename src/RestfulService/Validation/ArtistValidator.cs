@@ -5,7 +5,7 @@ using RestfulService.Resources;
 
 namespace RestfulService.Validation
 {
-	public class ArtistValidator : ISelfValidator<Artist>{
+	public class ArtistValidator : IValidator<Artist>{
 		public IEnumerable<Error> Validate(object item, string httpMethod) {
 			var artist = (Artist)item;
 			if (httpMethod == "POST") 

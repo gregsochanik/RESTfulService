@@ -5,7 +5,7 @@ using RestfulService.Resources;
 
 namespace RestfulService.Validation
 {
-	public class SearchResourceValidator : ISelfValidator<SearchResource> {
+	public class SearchResourceValidator : IValidator<SearchResource> {
 		public IEnumerable<Error> Validate(object item, string httpMethod) {
 			var searchResource = (SearchResource) item;
 

@@ -30,7 +30,7 @@ namespace RestfulService.OperationInterceptors
 				var parameter = input.Binder.BuildObject();
 
 				try {
-					ISelfValidator validator = ResolveValidator(parameter);
+					IValidator validator = ResolveValidator(parameter);
 
 					var errors = validator.Validate(parameter.Instance, _context.Request.HttpMethod).ToList();
 
@@ -46,16 +46,10 @@ namespace RestfulService.OperationInterceptors
 			return true;
 		}
 
-		private ISelfValidator ResolveValidator(BindingResult parameter) {
-			//var validationFactory =
-			//    typeof (IValidationFactory<>).MakeGenericType(parameter.Instance.GetType());
+		private IValidator ResolveValidator(BindingResult parameter) {
+			Type validatorType = typeof(IValidator<>).MakeGenericType(parameter.Instance.GetType());
 
-			//var resolve = _resolver.Resolve(validationFactory) as IValidationFactory<Artist>;
-			//return resolve.GetValidator(_context.Request.HttpMethod);
-
-			Type validatorType = typeof(ISelfValidator<>).MakeGenericType(parameter.Instance.GetType());
-
-			return _resolver.Resolve(validatorType) as ISelfValidator;
+			return _resolver.Resolve(validatorType) as IValidator;
 		}
 
 		public bool AfterExecute(IOperation operation, IEnumerable<OutputMember> outputMembers) {
