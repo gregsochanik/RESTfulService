@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using System.Xml;
 using RestfulService.Exceptions;
+using RestfulService.Handlers;
 using RestfulService.Resources;
 using RestfulService.Utility.Serialization;
 
@@ -9,7 +10,6 @@ namespace RestfulService.Utility.IO.Writers
 	public class Writer<T> : IWriter<T> where T : IHasId
 	{
 		protected string MainDirectory = "";
-		private const string FILE_PATH_FORMAT = "{0}/{1}.xml";
 
 		private readonly IFileWrapper _fileWrapper;
 		private readonly ISerializer<T> _serializer;
@@ -21,7 +21,7 @@ namespace RestfulService.Utility.IO.Writers
 
 		public void CreateFile(T artist) {
 			_fileWrapper.CreateDirectory(MainDirectory);
-			string filePath = GetFilePath(artist.Id);
+			string filePath = ServiceEnvironment.GetFilePath(artist.Id, MainDirectory);
 			if (_fileWrapper.FileExists(filePath))
 				throw new ResourceExistsException(string.Format("{0} {1} already exists", typeof(T), artist.Id));
 
@@ -32,7 +32,7 @@ namespace RestfulService.Utility.IO.Writers
 		}
 
 		public void UpdateFile(T artist) {
-			string filePath = GetFilePath(artist.Id);
+			string filePath = ServiceEnvironment.GetFilePath(artist.Id, MainDirectory);
 			if (!_fileWrapper.FileExists(filePath))
 				throw new FileNotFoundException(string.Format("Artist {0} not found", artist.Id));
 
@@ -42,12 +42,8 @@ namespace RestfulService.Utility.IO.Writers
 		}
 
 		public void DeleteFile(int id) {
-			string filePath = GetFilePath(id);
+			string filePath = ServiceEnvironment.GetFilePath(id, MainDirectory);
 			_fileWrapper.DeleteFile(filePath);
-		}
-
-		private string GetFilePath(int id) {
-			return string.Format(FILE_PATH_FORMAT, MainDirectory, id);
 		}
 	} 
 

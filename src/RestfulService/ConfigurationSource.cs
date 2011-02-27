@@ -4,10 +4,12 @@ using OpenRasta.Configuration;
 using OpenRasta.Configuration.Fluent;
 using OpenRasta.DI;
 using OpenRasta.IO;
+using OpenRasta.OperationModel.Interceptors;
 using OpenRasta.Web;
 using RestfulService.Authentication;
 using RestfulService.Codecs;
 using RestfulService.Handlers;
+using RestfulService.OperationInterceptors;
 using RestfulService.Resources;
 
 namespace RestfulService
@@ -52,6 +54,9 @@ namespace RestfulService
 					.AsJsonDataContract().ForMediaType(MediaType.Json);
 
 				ResourceSpace.Uses.OAuthAuthentication<OAuthAuthenticator>();
+
+				ResourceSpace.Uses.CustomDependency<IOperationInterceptor, ValidationOperationInterceptor>(DependencyLifetime.Transient);
+				ResourceSpace.Uses.CustomDependency<IOperationInterceptor, ExceptionHandler>(DependencyLifetime.Transient);
 			}
 		}
 	}

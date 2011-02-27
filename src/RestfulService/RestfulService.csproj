@@ -89,8 +89,12 @@
     <Compile Include="Handlers\HomeHandler.cs" />
     <Compile Include="Handlers\HttpVerb.cs" />
     <Compile Include="Handlers\SearchHandler.cs" />
+    <Compile Include="Handlers\ServiceEnvironment.cs" />
     <Compile Include="Handlers\TrackDownloadHandler.cs" />
     <Compile Include="Logging\Log4NetLogger.cs" />
+    <Compile Include="OperationInterceptors\ExceptionHandler.cs" />
+    <Compile Include="OperationInterceptors\ExceptionOutputHandler.cs" />
+    <Compile Include="OperationInterceptors\IOutputHandler.cs" />
     <Compile Include="OperationInterceptors\ValidationOperationInterceptor.cs" />
     <Compile Include="OperationResults\ImATeapot.cs" />
     <Compile Include="OperationResults\ServiceUnavailable.cs" />

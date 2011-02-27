@@ -6,12 +6,11 @@ using OpenRasta.DI;
 using OpenRasta.OperationModel;
 using OpenRasta.OperationModel.Interceptors;
 using OpenRasta.Web;
-using RestfulService.Resources;
 using RestfulService.Validation;
 
 namespace RestfulService.OperationInterceptors
 {
-	public class ValidationOperationInterceptor : IOperationInterceptor {
+	public class ValidationOperationInterceptor : OperationInterceptor {
 
 		private readonly IDependencyResolver _resolver;
 		private readonly ICommunicationContext _context;
@@ -21,9 +20,9 @@ namespace RestfulService.OperationInterceptors
 			_context = context;
 		}
 
-		public bool BeforeExecute(IOperation operation) {
-
-			foreach (var input in operation.Inputs) {
+		public override bool BeforeExecute(IOperation operation) {
+			
+			foreach (InputMember input in operation.Inputs) {
 				if (input == null)
 					continue;
 
@@ -50,14 +49,6 @@ namespace RestfulService.OperationInterceptors
 			Type validatorType = typeof(IValidator<>).MakeGenericType(parameter.Instance.GetType());
 
 			return _resolver.Resolve(validatorType) as IValidator;
-		}
-
-		public bool AfterExecute(IOperation operation, IEnumerable<OutputMember> outputMembers) {
-			return true;
-		}
-
-		public Func<IEnumerable<OutputMember>> RewriteOperation(Func<IEnumerable<OutputMember>> operationBuilder) {
-			return null;
 		}
 	}
 }
