@@ -91,6 +91,7 @@
     <Compile Include="Handlers\SearchHandler.cs" />
     <Compile Include="Handlers\ServiceEnvironment.cs" />
     <Compile Include="Handlers\TrackDownloadHandler.cs" />
+    <Compile Include="LocalInstaller.cs" />
     <Compile Include="Logging\Log4NetLogger.cs" />
     <Compile Include="OperationInterceptors\ExceptionHandler.cs" />
     <Compile Include="OperationInterceptors\ExceptionOutputHandler.cs" />
