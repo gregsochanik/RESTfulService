@@ -32,23 +32,6 @@ namespace RestfulService.Unit.Tests
 		}
 		
 		[Test]
-		public void Should_return_InternalServerError_on_exception() {
-			_writer.Stub(x => x.CreateFile(null)).IgnoreArguments().Throw(new Exception());
-			var artistHandler = new ArtistHandler(_writer, _reader);
-			var operationResult = artistHandler.Post(new Artist { Id = 1, Genre = "r", Name = "r" });
-			Assert.That(operationResult.StatusCode, Is.EqualTo(500));
-		}
-
-		[Test]
-		public void Should_return_Found_if_resource_exists() {
-			_writer.Stub(x => x.CreateFile(null)).IgnoreArguments().Throw(new ResourceExistsException(""));
-			var artistHandler = new ArtistHandler(_writer, _reader);
-			var operationResult = artistHandler.Post(new Artist { Id = 1, Genre = "r", Name = "r" });
-			Assert.That(operationResult.StatusCode, Is.EqualTo(302));
-			Assert.That(operationResult.RedirectLocation, Is.EqualTo(new Uri(_baseUrl + "artist/1")));
-		}
-
-		[Test]
 		public void Should_return_Created_on_successful_creation() {
 			var artistHandler = new ArtistHandler(_writer, _reader);
 			var operationResult = artistHandler.Post(new Artist { Id = 1, Genre = "r", Name = "r" });

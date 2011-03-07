@@ -22,6 +22,10 @@ namespace RestfulService.OperationInterceptors
 		public override bool BeforeExecute(IOperation operation)
 		{
 			InputMember inputMember = operation.Inputs.FirstOrDefault();
+
+			if (inputMember == null)
+				return true;
+
 			var parameter = inputMember.Binder.BuildObject();
 
 			try

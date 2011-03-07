@@ -3,5 +3,6 @@
 	public interface IReader<out T>
 	{
 		T ReadFromFile(int id);
+		bool Exists(string filePath);
 	}
 }

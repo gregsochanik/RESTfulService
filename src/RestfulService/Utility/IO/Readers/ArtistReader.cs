@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using RestfulService.Handlers;
 using RestfulService.Resources;
 using RestfulService.Utility.Serialization;
 
@@ -31,6 +30,10 @@ namespace RestfulService.Utility.IO.Readers
 			var fileAsXml = _fileWrapper.FileAsXml(filePath);
 
 			return _serializer.DeSerialize(fileAsXml);
+		}
+
+		public bool Exists(string filePath) {
+			return File.Exists(filePath);
 		}
 	}
 }

@@ -46,7 +46,7 @@ namespace RestfulService.Handlers
 		public OperationResult Delete(Artist artist) {
 			string filePath = ServiceEnvironment.GetFilePath(artist.Id, "C:/artist");
 
-			if (!File.Exists(filePath))
+			if (!_reader.Exists(filePath))
 				throw new FileNotFoundException(string.Format("Could not find {0}", filePath));
 			
 			_writer.DeleteFile(artist.Id);

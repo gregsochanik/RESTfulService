@@ -27,23 +27,6 @@ namespace RestfulService.Unit.Tests
 			_writer = MockRepository.GenerateStub<IWriter<Artist>>();
 		}
 
-
-		[Test]
-		public void Should_return_InternalServerError_on_exception() {
-			_reader.Stub(x => x.ReadFromFile(0)).IgnoreArguments().Throw(new Exception());
-			var artistHandler = new ArtistHandler(_writer, _reader);
-			var operationResult = artistHandler.Put(new Artist { Id = 1, Genre = "r", Name = "r" });
-			Assert.That(operationResult.StatusCode, Is.EqualTo(500));
-		}
-
-		[Test]
-		public void Should_return_NotFound_with_incorrect_artist() {
-			_reader.Stub(x => x.ReadFromFile(0)).IgnoreArguments().Throw(new FileNotFoundException());
-			var artistHandler = new ArtistHandler(_writer, _reader);
-			var operationResult = artistHandler.Put(new Artist { Id = 1, Genre = "r", Name = "r" });
-			Assert.That(operationResult.StatusCode, Is.EqualTo(404));
-		}
-
 		[Test]
 		public void Should_return_NoContent_on_successful_update() {
 			var artistHandler = new ArtistHandler(_writer, _reader);

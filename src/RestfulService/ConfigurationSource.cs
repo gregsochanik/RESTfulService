@@ -20,7 +20,8 @@ namespace RestfulService
 				ResourceSpace.Has
 					.ResourcesOfType<HomeResource>()
 					.AtUri("/home")
-					.HandledBy<HomeHandler>().AsXmlSerializer().ForMediaType(new MediaType("text/xml")).ForMediaType(MediaType.Xml)
+					.HandledBy<HomeHandler>().AsXmlSerializer()
+					.ForMediaType(new MediaType("text/xml")).ForMediaType(MediaType.Xml)
 					.And
 					.AsJsonDataContract().ForMediaType(MediaType.Json);
 

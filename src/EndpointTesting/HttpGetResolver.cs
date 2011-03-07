@@ -53,7 +53,13 @@ namespace EndpointTesting {
 		}
 
 		public string UploadString(string address, string method, string data) {
-			return _client.UploadString(address, method, data);
+			try {
+				return _client.UploadString(address, method, data);
+			} catch(WebException ex) {
+				using(var sr = new StreamReader(ex.Response.GetResponseStream())) {
+					return sr.ReadToEnd();
+				}
+			}
 		}
 
 		public Encoding Encoding {
