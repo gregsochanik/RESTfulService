@@ -78,6 +78,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Authentication\OAuthAuthenticationScheme.cs" />
+    <Compile Include="Authentication\RequiresOAuthAttribute.cs" />
     <Compile Include="Codecs\SevenDigitalDataContractCodec.cs" />
     <Compile Include="ConfigurationSource.cs" />
     <Compile Include="DependancyResolver.cs" />
@@ -95,6 +96,7 @@
     <Compile Include="Logging\Log4NetLogger.cs" />
     <Compile Include="OperationInterceptors\ExceptionOutputHandler.cs" />
     <Compile Include="OperationInterceptors\IOutputHandler.cs" />
+    <Compile Include="OperationInterceptors\RequiresOAuthInterceptor.cs" />
     <Compile Include="OperationInterceptors\ValidationOperationInterceptor.cs" />
     <Compile Include="OperationResults\ImATeapot.cs" />
     <Compile Include="OperationResults\ServiceUnavailable.cs" />
