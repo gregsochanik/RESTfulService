@@ -4,6 +4,7 @@ using NUnit.Framework;
 using OpenRasta.Web;
 using RestfulService.Exceptions;
 using RestfulService.Handlers;
+using RestfulService.OperationInterceptors;
 using RestfulService.Resources;
 using RestfulService.Utility.IO;
 using RestfulService.Utility.IO.Readers;
@@ -21,6 +22,7 @@ namespace RestfulService.Unit.Tests
 		private IFileWrapper _fileWrapper;
 		private ISerializer<Artist> _serializer;
 		private readonly string _baseUrl = ConfigurationManager.AppSettings["Application.BaseUrl"];
+		private IOutputHandler _outputHandler;
 
 		[SetUp]
 		public void SetUp() {
@@ -29,11 +31,13 @@ namespace RestfulService.Unit.Tests
 
 			_reader = new ArtistReader(_fileWrapper, _serializer);
 			_writer = MockRepository.GenerateStub<IWriter<Artist>>();
+
+			_outputHandler = MockRepository.GenerateStub<IOutputHandler>();
 		}
 		
 		[Test]
 		public void Should_return_Created_on_successful_creation() {
-			var artistHandler = new ArtistHandler(_writer, _reader);
+			var artistHandler = new ArtistHandler(_writer, _reader, _outputHandler);
 			var operationResult = artistHandler.Post(new Artist { Id = 1, Genre = "r", Name = "r" });
 			Assert.That(operationResult.StatusCode, Is.EqualTo(201));
 			Assert.That(operationResult.RedirectLocation, Is.EqualTo(new Uri(_baseUrl + "artist/1")));

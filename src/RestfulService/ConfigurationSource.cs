@@ -54,19 +54,18 @@ namespace RestfulService
 					.And
 					.AsJsonDataContract().ForMediaType(MediaType.Json);
 
-				ResourceSpace.Uses.OAuthAuthentication<OAuthAuthenticator>();
+				//ResourceSpace.Uses.OAuthAuthentication<OAuthAuthenticator>();
 
-				ResourceSpace.Uses.CustomDependency<IOperationInterceptor, ValidationOperationInterceptor>(DependencyLifetime.Transient);
-				ResourceSpace.Uses.CustomDependency<IOperationInterceptor, ExceptionHandler>(DependencyLifetime.Transient);
+				//ResourceSpace.Uses.CustomDependency<IOperationInterceptor, ValidationOperationInterceptor>(DependencyLifetime.Transient);
+				//ResourceSpace.Uses.CustomDependency<IOperationInterceptor, ExceptionHandler>(DependencyLifetime.Transient);
 			}
 		}
 	}
 
 	public static class ExtensionsToIUses {
 		public static void OAuthAuthentication<TBasicAuthenticator>(this IUses uses) where TBasicAuthenticator : class, IBasicAuthenticator {
-			uses.CustomDependency<IAuthenticationScheme, OAuthAuthenticationScheme>(DependencyLifetime.Transient);
-
-			uses.CustomDependency<IBasicAuthenticator, TBasicAuthenticator>(DependencyLifetime.Transient);
+			//uses.CustomDependency<IAuthenticationScheme, OAuthAuthenticationScheme>(DependencyLifetime.Transient);
+			//uses.CustomDependency<IBasicAuthenticator, TBasicAuthenticator>(DependencyLifetime.Transient);
 		}
 	}
 }

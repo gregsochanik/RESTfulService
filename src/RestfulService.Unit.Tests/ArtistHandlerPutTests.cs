@@ -2,6 +2,7 @@
 using System.IO;
 using NUnit.Framework;
 using RestfulService.Handlers;
+using RestfulService.OperationInterceptors;
 using RestfulService.Resources;
 using RestfulService.Utility.IO;
 using RestfulService.Utility.IO.Readers;
@@ -17,6 +18,7 @@ namespace RestfulService.Unit.Tests
 		private IWriter<Artist> _writer;
 		private IFileWrapper _fileWrapper;
 		private ISerializer<Artist> _serializer;
+		private IOutputHandler _outputHandler;
 
 		[SetUp]
 		public void SetUp() {
@@ -25,11 +27,13 @@ namespace RestfulService.Unit.Tests
 
 			_reader = MockRepository.GenerateStub<IReader<Artist>>();
 			_writer = MockRepository.GenerateStub<IWriter<Artist>>();
+
+			_outputHandler = MockRepository.GenerateStub<IOutputHandler>();
 		}
 
 		[Test]
 		public void Should_return_NoContent_on_successful_update() {
-			var artistHandler = new ArtistHandler(_writer, _reader);
+			var artistHandler = new ArtistHandler(_writer, _reader, _outputHandler);
 			var artist = new Artist { Id = 1, Genre = "r", Name = "r" };
 			_reader.Stub(x => x.ReadFromFile(0)).IgnoreArguments().Return(artist);
 			var operationResult = artistHandler.Put(artist);

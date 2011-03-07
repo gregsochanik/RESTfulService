@@ -1,6 +1,7 @@
 ﻿using System;
 using NUnit.Framework;
 using RestfulService.Handlers;
+using RestfulService.OperationInterceptors;
 using RestfulService.Resources;
 using RestfulService.Utility.IO;
 using RestfulService.Utility.IO.Readers;
@@ -16,6 +17,7 @@ namespace RestfulService.Unit.Tests {
 		private IWriter<Artist> _writer;
 		private IFileWrapper _fileWrapper;
 		private ISerializer<Artist> _serializer;
+		private IOutputHandler _outputHandler;
 
 		[SetUp]
 		public void SetUp() {
@@ -24,6 +26,8 @@ namespace RestfulService.Unit.Tests {
 
 			_reader = new ArtistReader(_fileWrapper, _serializer);
 			_writer = MockRepository.GenerateStub<IWriter<Artist>>();
+
+			_outputHandler = MockRepository.GenerateStub<IOutputHandler>();
 		}
 
 		[Test]
@@ -32,7 +36,7 @@ namespace RestfulService.Unit.Tests {
 			reader.Stub(x => x.ReadFromFile(0)).IgnoreArguments().Return(new Artist());
 			_fileWrapper.Stub(x => x.FileExists("")).IgnoreArguments().Return(true);
 
-			var artistHandler = new ArtistHandler(_writer, reader);
+			var artistHandler = new ArtistHandler(_writer, reader, _outputHandler);
 			var operationResult = artistHandler.Get(new Artist{Id=1});
 			Assert.That(operationResult.StatusCode, Is.EqualTo(200));
 		}
@@ -46,7 +50,7 @@ namespace RestfulService.Unit.Tests {
 			reader.Stub(x => x.ReadFromFile(artistId)).IgnoreArguments().Return(new Artist { Id = artistId, Genre = expectedGenre, Name = expected });
 			_fileWrapper.Stub(x => x.FileExists("")).IgnoreArguments().Return(true);
 
-			var artistHandler = new ArtistHandler(_writer, reader);
+			var artistHandler = new ArtistHandler(_writer, reader, _outputHandler);
 			var operationResult = artistHandler.Get(new Artist { Id = 1 });
 			Assert.That(operationResult.StatusCode, Is.EqualTo(200));
 			Assert.That(operationResult.ResponseResource, Is.Not.Null);

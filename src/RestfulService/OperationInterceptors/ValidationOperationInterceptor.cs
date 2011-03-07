@@ -30,6 +30,8 @@ namespace RestfulService.OperationInterceptors
 
 				try {
 					IValidator validator = ResolveValidator(parameter);
+					if (validator == null)
+						continue;
 
 					var errors = validator.Validate(parameter.Instance, _context.Request.HttpMethod).ToList();
 
@@ -48,7 +50,10 @@ namespace RestfulService.OperationInterceptors
 		private IValidator ResolveValidator(BindingResult parameter) {
 			Type validatorType = typeof(IValidator<>).MakeGenericType(parameter.Instance.GetType());
 
-			return _resolver.Resolve(validatorType) as IValidator;
+			if (_resolver.HasDependency(validatorType))
+				return _resolver.Resolve(validatorType) as IValidator;
+
+			return null;
 		}
 	}
 }

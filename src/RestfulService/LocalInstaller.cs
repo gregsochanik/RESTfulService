@@ -1,6 +1,7 @@
 ﻿using Castle.MicroKernel.Registration;
 using Castle.MicroKernel.SubSystems.Configuration;
 using Castle.Windsor;
+using OpenRasta.OperationModel.Interceptors;
 
 namespace RestfulService
 {
@@ -8,7 +9,7 @@ namespace RestfulService
 		public void Install(IWindsorContainer container, IConfigurationStore store) {
 			var descriptor = AllTypes
 				.FromAssembly(typeof(DependencyResolver).Assembly)
-				.Pick()
+				.Pick().Unless(x=>x.IsInstanceOfType(typeof(OperationInterceptor)))
 				.WithService.FirstInterface()
 				.Configure(c => c.LifeStyle.Transient);
 

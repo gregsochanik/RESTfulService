@@ -93,7 +93,6 @@
     <Compile Include="Handlers\TrackDownloadHandler.cs" />
     <Compile Include="LocalInstaller.cs" />
     <Compile Include="Logging\Log4NetLogger.cs" />
-    <Compile Include="OperationInterceptors\ExceptionHandler.cs" />
     <Compile Include="OperationInterceptors\ExceptionOutputHandler.cs" />
     <Compile Include="OperationInterceptors\IOutputHandler.cs" />
     <Compile Include="OperationInterceptors\ValidationOperationInterceptor.cs" />
