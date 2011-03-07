@@ -27,7 +27,23 @@ namespace RestfulService.Unit.Tests {
 			_reader = new ArtistReader(_fileWrapper, _serializer);
 			_writer = MockRepository.GenerateStub<IWriter<Artist>>();
 
-			_outputHandler = MockRepository.GenerateStub<IOutputHandler>();
+			_outputHandler = new ExceptionOutputHandler();;
+		}
+
+		[Test]
+		public void Get_should_return_NotFound_with_incorrect_artist() {
+			_fileWrapper.Stub(x => x.FileExists("")).IgnoreArguments().Return(false);
+			var artistHandler = new ArtistHandler(_writer, _reader, _outputHandler);
+			var operationResult = artistHandler.Get(new Artist { Id = 1 });
+			Assert.That(operationResult.StatusCode, Is.EqualTo(404));
+		}
+
+		[Test]
+		public void Get_should_return_InternalServerError_on_exception() {
+			_fileWrapper.Stub(x => x.FileExists("")).IgnoreArguments().Throw(new Exception());
+			var artistHandler = new ArtistHandler(_writer, _reader, _outputHandler);
+			var operationResult = artistHandler.Get(new Artist { Id = 1 });
+			Assert.That(operationResult.StatusCode, Is.EqualTo(500));
 		}
 
 		[Test]

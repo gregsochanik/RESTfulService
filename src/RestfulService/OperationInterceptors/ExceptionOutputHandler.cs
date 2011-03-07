@@ -22,13 +22,14 @@ namespace RestfulService.OperationInterceptors
 				};
 			}
 
+			int resourceId = ((IHasId)parameter).Id;
+			var uriString = ServiceEnvironment.CreateArtistUriString(resourceId);
+
 			if (ex is ResourceExistsException) {
-				return new OperationResult.Found { ResponseResource = parameter };
+				return new OperationResult.Found { ResponseResource = parameter, RedirectLocation = new Uri(uriString) };
 			}
 
 			if (ex is IOException) {
-				int resourceId = ((IHasId)parameter).Id;
-				var uriString = ServiceEnvironment.CreateArtistUriString(resourceId);
 				return new OperationResult.MethodNotAllowed(new Uri(uriString), HttpVerb.DELETE.ToString(), resourceId);
 			}
 
