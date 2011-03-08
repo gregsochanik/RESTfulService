@@ -10,6 +10,9 @@ namespace RestfulService.Authentication
 	public class OAuthAuthenticationScheme : IAuthenticationScheme
 	{
 		const string SCHEME = "OAuth";
+		private const string EXPECTED_USER_ID = "12345";
+		private const string EXPECTED_CONSUMER_KEY = "YOUR_KEY_HERE";
+		private const string EXPECTED_CONSUMER_SECRET = "12345678";
 
 		public AuthenticationResult Authenticate(IRequest request)
 		{
@@ -17,15 +20,11 @@ namespace RestfulService.Authentication
 
 			// http://hueniverse.com/2008/10/beginners-guide-to-oauth-part-iv-signing-requests/
 			
-			// Needs a fake user to map to something (config file?)
+			// Needs to be able to return a request token (generate and save to filesystem) - Should this be an endpoint, or happen here?
 
-			// Needs a fake consumer key to map to something (config file?)
+			// and read it back for an access token (generate and save to filesystem with a timeout value) - do this first with fake token
 
-			// Needs to be able to return a request token (generate and save to filesystem)
-
-			// and read it back for an access token (generate and save to filesystem with a timeout value)
-
-			// Write AAT to sign and test
+			// Write AAT to sign and test - i.e. get request token first and then access token
 
 			return new AuthenticationResult.Success("greg", "Administrator");
 		}

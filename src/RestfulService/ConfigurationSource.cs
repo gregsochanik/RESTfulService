@@ -53,6 +53,8 @@ namespace RestfulService
 					.ForMediaType(new MediaType("text/xml")).ForMediaType(MediaType.Xml)
 					.And
 					.AsJsonDataContract().ForMediaType(MediaType.Json);
+
+				ResourceSpace.Uses.CustomDependency<IOperationInterceptor, ValidationOperationInterceptor>(DependencyLifetime.Singleton);
 			}
 		}
 	}

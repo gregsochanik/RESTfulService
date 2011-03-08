@@ -1,7 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using Castle.MicroKernel.Registration;
+using Castle.Windsor;
+using Castle.Windsor.Configuration.Interpreters;
 using NUnit.Framework;
 using OpenRasta.Authentication;
+using OpenRasta.DI;
+using OpenRasta.DI.Windsor;
 using OpenRasta.OperationModel;
 using OpenRasta.OperationModel.Interceptors;
 using OpenRasta.Web;
@@ -12,18 +18,6 @@ using Rhino.Mocks;
 
 namespace RestfulService.Unit.Tests.Authentication {
 	
-	[TestFixture, Ignore("not implemented")]
-	public class RequiresOAuthAttributeTests
-	{
-		[Test]
-		public void Should_provide_correct_interceptor() {
-			var requiresOAuthAttribute = new RequiresOAuthAttribute();
-			IEnumerable<IOperationInterceptor> operationInterceptors = requiresOAuthAttribute.GetInterceptors(MockRepository.GenerateStub<IOperation>());
-			Assert.That(operationInterceptors.Count(), Is.EqualTo(1));
-			Assert.That(operationInterceptors.FirstOrDefault().GetType(), Is.TypeOf<RequiresOAuthInterceptor>());
-		}
-	}
-
 	[TestFixture]
 	public class RequiresOAuthInterceptortests {
 		private ICommunicationContext _communicationContext;

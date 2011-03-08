@@ -1,5 +1,4 @@
-﻿using System;
-using Castle.Windsor;
+﻿using Castle.Windsor;
 using Castle.Windsor.Configuration.Interpreters;
 using OpenRasta.DI;
 using OpenRasta.DI.Windsor;

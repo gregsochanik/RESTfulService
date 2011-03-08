@@ -9,7 +9,8 @@ namespace RestfulService
 		public void Install(IWindsorContainer container, IConfigurationStore store) {
 			var descriptor = AllTypes
 				.FromAssembly(typeof(DependencyResolver).Assembly)
-				.Pick().Unless(x=>x.IsInstanceOfType(typeof(OperationInterceptor)))
+				.Pick()
+				.Unless(x=>x.IsSubclassOf(typeof(OperationInterceptor)))
 				.WithService.FirstInterface()
 				.Configure(c => c.LifeStyle.Transient);
 

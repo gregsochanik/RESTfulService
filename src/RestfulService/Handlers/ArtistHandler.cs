@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using OpenRasta.Web;
+using RestfulService.Handlers.ExceptionOutput;
 using RestfulService.OperationInterceptors;
 using RestfulService.Resources;
 using RestfulService.Utility.IO.Readers;
@@ -11,12 +12,12 @@ namespace RestfulService.Handlers
 	public class ArtistHandler {
 		private readonly IWriter<Artist> _writer;
 		private readonly IReader<Artist> _reader;
-		private readonly IOutputHandler _outputHandler;
+		private readonly IOperationOutput _operationOutput;
 
-		public ArtistHandler(IWriter<Artist> writer, IReader<Artist> reader, IOutputHandler outputHandler) {
+		public ArtistHandler(IWriter<Artist> writer, IReader<Artist> reader, IOperationOutput operationOutput) {
 			_writer = writer;
 			_reader = reader;
-			_outputHandler = outputHandler;
+			_operationOutput = operationOutput;
 		}
 
 		[HttpOperation("GET")]
@@ -25,7 +26,7 @@ namespace RestfulService.Handlers
 				Artist fromFile = _reader.ReadFromFile(artist.Id);
 				return new OperationResult.OK(fromFile);
 			} catch(Exception ex) {
-				return _outputHandler.HandleOutput(ex, artist);
+				return _operationOutput.HandleOutput(ex, artist);
 			}
 		}
 
@@ -37,7 +38,7 @@ namespace RestfulService.Handlers
 				return new OperationResult.Created
 				{RedirectLocation = new Uri(uriString), ResponseResource = artist};
 			}catch(Exception ex) {
-				return _outputHandler.HandleOutput(ex, artist);
+				return _operationOutput.HandleOutput(ex, artist);
 			}
 		}
 
@@ -52,7 +53,7 @@ namespace RestfulService.Handlers
 
 				return new OperationResult.NoContent { ResponseResource = artistToUpdate, RedirectLocation = new Uri(uriString) };
 			}catch(Exception ex) {
-				return _outputHandler.HandleOutput(ex, artist);
+				return _operationOutput.HandleOutput(ex, artist);
 			}
 		}
 
@@ -68,7 +69,7 @@ namespace RestfulService.Handlers
 				return new OperationResult.NoContent();
 			}
 			catch(Exception ex) {
-				return _outputHandler.HandleOutput(ex, artist);
+				return _operationOutput.HandleOutput(ex, artist);
 			}
 		}
 

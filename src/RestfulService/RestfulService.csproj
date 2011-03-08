@@ -87,6 +87,8 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Handlers\ArtistHandler.cs" />
+    <Compile Include="Handlers\ExceptionOutput\ExceptionOperationOutput.cs" />
+    <Compile Include="Handlers\ExceptionOutput\IOperationOutput.cs" />
     <Compile Include="Handlers\HomeHandler.cs" />
     <Compile Include="Handlers\HttpVerb.cs" />
     <Compile Include="Handlers\SearchHandler.cs" />
@@ -94,8 +96,6 @@
     <Compile Include="Handlers\TrackDownloadHandler.cs" />
     <Compile Include="LocalInstaller.cs" />
     <Compile Include="Logging\Log4NetLogger.cs" />
-    <Compile Include="OperationInterceptors\ExceptionOutputHandler.cs" />
-    <Compile Include="OperationInterceptors\IOutputHandler.cs" />
     <Compile Include="OperationInterceptors\RequiresOAuthInterceptor.cs" />
     <Compile Include="OperationInterceptors\ValidationOperationInterceptor.cs" />
     <Compile Include="OperationResults\ImATeapot.cs" />
@@ -115,9 +115,8 @@
     <Compile Include="Utility\Serialization\ISerializer.cs" />
     <Compile Include="Utility\Serialization\XmlSerializer.cs" />
     <Compile Include="Validation\ArtistValidator.cs" />
-    <Compile Include="Validation\ArtistValidationFactory.cs" />
+    <Compile Include="Validation\SearchResourceValidator.cs" />
     <Compile Include="Validation\IValidator.cs" />
-    <Compile Include="Validation\IValidationFactory.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
