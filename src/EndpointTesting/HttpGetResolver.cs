@@ -12,12 +12,28 @@ namespace EndpointTesting {
 			var webRequest = (HttpWebRequest)WebRequest.Create(endpoint.ToString());
 			webRequest.Method = method;
 			webRequest.Headers.Add(headers);
-			var webResponse = webRequest.GetResponse();
+			HttpWebResponse webResponse;
+			try {
+				webResponse = (HttpWebResponse)webRequest.GetResponse();
+			} catch(WebException ex) {
+				webResponse = (HttpWebResponse)ex.Response;
+			}
 			string output;
 			using (var sr = new StreamReader(webResponse.GetResponseStream())) {
 				output = sr.ReadToEnd();
 			}
 			return output;
+		}
+
+		public HttpWebResponse ResolveAsResponse(Uri endpoint, string method, WebHeaderCollection headers) {
+			var webRequest = (HttpWebRequest)WebRequest.Create(endpoint.ToString());
+			webRequest.Method = method;
+			webRequest.Headers.Add(headers);
+			try {
+				return (HttpWebResponse)webRequest.GetResponse();
+			} catch (WebException ex) {
+				return (HttpWebResponse)ex.Response;
+			}
 		}
 	}
 

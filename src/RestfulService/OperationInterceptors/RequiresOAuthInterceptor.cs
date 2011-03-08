@@ -18,8 +18,8 @@ namespace RestfulService.OperationInterceptors
 		public override bool BeforeExecute(IOperation operation) {
 			AuthenticationResult authenticationResult = _scheme.Authenticate(_context.Request);
 			if(authenticationResult is AuthenticationResult.Failed) {
-				_context.OperationResult = new OperationResult.Unauthorized
-				{ResponseResource = "You aint got no authoritah!!"};
+				_scheme.Challenge(_context.Response);
+				_context.OperationResult = new OperationResult.Unauthorized { ResponseResource = "You aint got no authoritah!!" };
 				return false;
 			}
 			return true;

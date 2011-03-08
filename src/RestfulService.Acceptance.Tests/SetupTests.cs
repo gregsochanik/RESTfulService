@@ -20,6 +20,33 @@ namespace RestfulService.Acceptance.Tests {
 	}
 
 	[TestFixture]
+	public class VoucherEndpointTests
+	{
+		[Test]
+		public void Should_get_unauthorized_with_correct_challenge_header_if_no_creds_provided_on_delete() {
+			string url = ConfigurationManager.AppSettings["Application.BaseUrl"];
+			var httpGetResolver = new HttpGetResolver();
+			var webHeaderCollection = new WebHeaderCollection();
+
+			HttpWebResponse response =  httpGetResolver.ResolveAsResponse(new Uri(url + "/voucher/1"), "DELETE", webHeaderCollection);
+
+			Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.Unauthorized));
+			Assert.That(response.GetResponseHeader("WWW-Authenticate"), Is.StringStarting("OAuth realm=\""));
+
+		}
+
+		[Test]
+		public void Should_get_unauthorized_if_incorrect_creds_provided() {
+			
+		}
+
+		[Test]
+		public void Should_get_200_if_correct_credentials_provided_along_with_correct_creds() {
+			
+		}
+	}
+
+	[TestFixture]
 	public class ArtistEndpointTests
 	{
 		[Test]

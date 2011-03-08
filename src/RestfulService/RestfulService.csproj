@@ -77,7 +77,10 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Authentication\IHeaderMapper.cs" />
     <Compile Include="Authentication\OAuthAuthenticationScheme.cs" />
+    <Compile Include="Authentication\OAuthHeaderMapper.cs" />
+    <Compile Include="Authentication\OAuthRequestHeader.cs" />
     <Compile Include="Authentication\RequiresOAuthAttribute.cs" />
     <Compile Include="Codecs\SevenDigitalDataContractCodec.cs" />
     <Compile Include="ConfigurationSource.cs" />
@@ -93,7 +96,7 @@
     <Compile Include="Handlers\HttpVerb.cs" />
     <Compile Include="Handlers\SearchHandler.cs" />
     <Compile Include="Handlers\ServiceEnvironment.cs" />
-    <Compile Include="Handlers\TrackDownloadHandler.cs" />
+    <Compile Include="Handlers\VoucherHandler.cs" />
     <Compile Include="LocalInstaller.cs" />
     <Compile Include="Logging\Log4NetLogger.cs" />
     <Compile Include="OperationInterceptors\RequiresOAuthInterceptor.cs" />

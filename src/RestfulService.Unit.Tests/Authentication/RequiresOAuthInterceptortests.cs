@@ -1,23 +1,62 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Castle.MicroKernel.Registration;
-using Castle.Windsor;
-using Castle.Windsor.Configuration.Interpreters;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using OpenRasta.Authentication;
-using OpenRasta.DI;
-using OpenRasta.DI.Windsor;
 using OpenRasta.OperationModel;
-using OpenRasta.OperationModel.Interceptors;
 using OpenRasta.Web;
 using RestfulService.Authentication;
-using RestfulService.Handlers;
 using RestfulService.OperationInterceptors;
 using Rhino.Mocks;
 
 namespace RestfulService.Unit.Tests.Authentication {
 	
+	[TestFixture]
+	public class OAuthAuthenticationTests
+	{
+		private const string OAUTH_HEADER = @"OAuth realm='http://localhost/restful_service/download', 
+												oauth_consumer_key='YOUR_KEY_HERE', 
+												oauth_token='TOKEN', 
+												oauth_nonce='nonce', 
+												oauth_timestamp='TIMESTAMP', 
+												oauth_signature_method='HMAC-SHA1', 
+												oauth_version='1.0', 
+												oauth_signature='SIGNATURE'";
+
+		[Test]
+		public void Should_fire_header_mapper_with_correct_value() {
+			var headerMapper = MockRepository.GenerateStub<IHeaderMapper<OAuthRequestHeader>>();
+			var request = MockRepository.GenerateStub<IRequest>();
+			var context = MockRepository.GenerateStub<ICommunicationContext>();
+			request.Stub(x => x.Headers).Return(new HttpHeaderDictionary() { { "Authorization", OAUTH_HEADER } });
+			var oAuthAuthenticationScheme = new OAuthAuthenticationScheme(headerMapper, context);
+			oAuthAuthenticationScheme.Authenticate(request);
+			headerMapper.AssertWasCalled(x=>x.Map(OAUTH_HEADER));
+		}
+	}
+
+	[TestFixture]
+	public class OAuthHeaderMapperTests
+	{
+		private const string OAUTH_HEADER = @"OAuth realm='http://localhost/restful_service/download', 
+												oauth_consumer_key=YOUR_KEY_HERE, 
+												oauth_token=TOKEN, 
+												oauth_nonce=nonce, 
+												oauth_timestamp=TIMESTAMP, 
+												oauth_signature_method=HMAC-SHA1, 
+												oauth_version=1.0, 
+												oauth_signature=SIGNATURE";
+
+		[Test]
+		public void Should_map_fields_correctly() {
+			OAuthRequestHeader oAuthRequestHeader = new OAuthHeaderMapper().Map(OAUTH_HEADER);
+			Assert.That(oAuthRequestHeader.ConsumerKey, Is.EqualTo("YOUR_KEY_HERE"));
+			Assert.That(oAuthRequestHeader.Token, Is.EqualTo("TOKEN"));
+			Assert.That(oAuthRequestHeader.Nonce, Is.EqualTo("nonce"));
+			Assert.That(oAuthRequestHeader.Timestamp, Is.EqualTo("TIMESTAMP"));
+			Assert.That(oAuthRequestHeader.SignatureMethod, Is.EqualTo("HMAC-SHA1"));
+			Assert.That(oAuthRequestHeader.Version, Is.EqualTo("1.0"));
+			Assert.That(oAuthRequestHeader.Signature, Is.EqualTo("SIGNATURE"));
+		}
+	}
+
 	[TestFixture]
 	public class RequiresOAuthInterceptortests {
 		private ICommunicationContext _communicationContext;
