@@ -36,7 +36,7 @@ namespace RestfulService.Acceptance.Tests {
 		}
 
 		[Test]
-		public void Should_get_unauthorized_if_incorrect_creds_provided() {
+		public void Should_get_unauthorized_if_incorrect_access_token_creds_provided() {
 			
 		}
 
@@ -45,6 +45,17 @@ namespace RestfulService.Acceptance.Tests {
 			
 		}
 	}
+
+	[TestFixture]
+	public class RequestTokenEndpointTests
+	{
+		[Test]
+		public void Should_get_unauthorized_if_incorrect_access_token_creds_provided()
+		{
+
+		}
+	}
+
 
 	[TestFixture]
 	public class ArtistEndpointTests

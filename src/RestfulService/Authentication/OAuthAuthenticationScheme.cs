@@ -4,6 +4,7 @@ using OpenRasta.Authentication;
 using OpenRasta.Authentication.Basic;
 using OpenRasta.Security;
 using OpenRasta.Web;
+using RestfulService.Handlers;
 
 namespace RestfulService.Authentication
 {
@@ -16,8 +17,11 @@ namespace RestfulService.Authentication
 		private readonly ICommunicationContext _context;
 		const string SCHEME = "OAuth";
 		private const string EXPECTED_USER_ID = "12345";
-		private const string EXPECTED_CONSUMER_KEY = "YOUR_KEY_HERE";
-		private const string EXPECTED_CONSUMER_SECRET = "12345678";
+		private const string EXPECTED_CONSUMER_KEY = "light";
+		private const string EXPECTED_REQUEST_TOKEN = "b0c2ec2c";
+		private const string EXPECTED_VERIFIER = "c87677a4";
+		private const string EXPECTED_ACCESS_TOKEN = "99fe97e1";
+		private const string EXPECTED_ACCESS_TOKEN_SECRET = "255ae587";
 
 		public OAuthAuthenticationScheme(IHeaderMapper<OAuthRequestHeader> headerMapper, ICommunicationContext context) {
 			_headerMapper = headerMapper;
@@ -32,14 +36,26 @@ namespace RestfulService.Authentication
 				return new AuthenticationResult.Failed();
 
 			OAuthRequestHeader oAuthRequestHeader = _headerMapper.Map(headerValue);
-			// http://hueniverse.com/2008/10/beginners-guide-to-oauth-part-iv-signing-requests/
-			
-			// Needs to be able to return a request token (generate and save to filesystem) - Should this be an endpoint, or happen here?
 
-			// and read it back for an access token (generate and save to filesystem with a timeout value) - do this first with fake token
+			if(oAuthRequestHeader.ConsumerKey != EXPECTED_CONSUMER_KEY)
+				return new AuthenticationResult.MalformedCredentials();
+
+			bool isAccessTokenRequest = !string.IsNullOrEmpty(oAuthRequestHeader.Verifier);
+
+			if (isAccessTokenRequest)
+			{
+				// Check credentials
+				if (oAuthRequestHeader.Token == EXPECTED_REQUEST_TOKEN && oAuthRequestHeader.Verifier == EXPECTED_VERIFIER)
+					return new OAuthSuccess(new OAuthCredentials(EXPECTED_ACCESS_TOKEN, EXPECTED_ACCESS_TOKEN_SECRET, true));
+			}
+			else
+			{
+				// and read it back for an access token (generate and save to filesystem with a timeout value) - do this first with fake token
+				if (oAuthRequestHeader.Token == EXPECTED_ACCESS_TOKEN && oAuthRequestHeader.TokenSecret == EXPECTED_ACCESS_TOKEN_SECRET)
+					return new OAuthSuccess();
+			}
 
 			// Write AAT to sign and test - i.e. get request token first and then access token)
-
 			return new AuthenticationResult.Failed();
 		}
 
@@ -52,5 +68,18 @@ namespace RestfulService.Authentication
 		{
 			get { return SCHEME; }
 		}
+	}
+
+	public class OAuthSuccess : AuthenticationResult
+	{
+		public OAuthSuccess()
+		{}
+
+		public OAuthSuccess(OAuthCredentials credentials)
+		{
+			Credentials = credentials;
+		}
+
+		public OAuthCredentials Credentials { get; set; }
 	}
 }

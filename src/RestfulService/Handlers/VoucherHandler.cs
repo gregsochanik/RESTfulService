@@ -21,11 +21,27 @@ namespace RestfulService.Handlers {
 		}
 	}
 
-	public class PaymentHandler
+	public class AccessTokenHandler
 	{
-		public OperationResult Put(VoucherResource voucher) {
+		[RequiresOAuth]
+		public OperationResult Post(int voucherId)
+		{
+			// find a way of getting back the AuthorisationResult
+			return new OperationResult.OK { ResponseResource = new OAuthCredentials("99fe97e1", "255ae587", true) };
+		}
+	}
 
-			return new OperationResult.OK { ResponseResource = new VoucherResource { DiscountValue = 10, Id = voucher.Id, Redeemed = false } };
+	public class OAuthCredentials
+	{
+		public string Token { get; set; }
+		public string TokenSecret { get; set; }
+		public bool CallbackConfirmed { get; set; }
+
+		public OAuthCredentials(string token, string tokensecret, bool callbackConfirmed)
+		{
+			Token = token;
+			TokenSecret = tokensecret;
+			CallbackConfirmed = callbackConfirmed;
 		}
 	}
 

@@ -41,10 +41,14 @@ namespace RestfulService
 					.AtUri("/voucher/{Id}")
 					.HandledBy<VoucherHandler>()
 					.AsXmlSerializer()
-					.ForMediaType("application/vnd.7digital+xml")
 					.ForMediaType(new MediaType("text/xml")).ForMediaType(MediaType.Xml);
 
-				
+				ResourceSpace.Has
+					.ResourcesOfType<VoucherResource>()
+					.AtUri("/requestToken/{voucherId}")
+					.HandledBy<RequestTokenHandler>()
+					.AsXmlSerializer()
+					.ForMediaType(MediaType.MultipartFormData).ForMediaType(MediaType.Xml);
 				
 				ResourceSpace.Has
 					.ResourcesOfType<SearchResource>()
