@@ -45,8 +45,8 @@ namespace RestfulService
 
 				ResourceSpace.Has
 					.ResourcesOfType<VoucherResource>()
-					.AtUri("/requestToken/{voucherId}")
-					.HandledBy<RequestTokenHandler>()
+					.AtUri("/accessToken/{voucherId}")
+					.HandledBy<AccessTokenHandler>()
 					.AsXmlSerializer()
 					.ForMediaType(MediaType.MultipartFormData).ForMediaType(MediaType.Xml);
 				
