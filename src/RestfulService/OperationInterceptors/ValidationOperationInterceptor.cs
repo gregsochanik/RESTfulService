@@ -32,7 +32,7 @@ namespace RestfulService.OperationInterceptors
 					if (validator == null)
 						continue;
 
-					var errors = validator.Validate(parameter.Instance, _context.Request.HttpMethod).ToList();
+					var errors = validator.Validate(parameter.Instance, operation.Name.ToUpper()).ToList();
 
 					if (errors.Count > 0) {
 						_context.OperationResult = new OperationResult.BadRequest {

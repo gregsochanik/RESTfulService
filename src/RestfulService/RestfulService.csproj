@@ -77,11 +77,6 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Authentication\IHeaderMapper.cs" />
-    <Compile Include="Authentication\OAuthAuthenticationScheme.cs" />
-    <Compile Include="Authentication\OAuthHeaderMapper.cs" />
-    <Compile Include="Authentication\OAuthRequestHeader.cs" />
-    <Compile Include="Authentication\RequiresOAuthAttribute.cs" />
     <Compile Include="Codecs\SevenDigitalDataContractCodec.cs" />
     <Compile Include="ConfigurationSource.cs" />
     <Compile Include="DependancyResolver.cs" />
@@ -96,10 +91,8 @@
     <Compile Include="Handlers\HttpVerb.cs" />
     <Compile Include="Handlers\SearchHandler.cs" />
     <Compile Include="Handlers\ServiceEnvironment.cs" />
-    <Compile Include="Handlers\VoucherHandler.cs" />
     <Compile Include="LocalInstaller.cs" />
     <Compile Include="Logging\Log4NetLogger.cs" />
-    <Compile Include="OperationInterceptors\RequiresOAuthInterceptor.cs" />
     <Compile Include="OperationInterceptors\ValidationOperationInterceptor.cs" />
     <Compile Include="OperationResults\ImATeapot.cs" />
     <Compile Include="OperationResults\ServiceUnavailable.cs" />
@@ -121,7 +114,9 @@
     <Compile Include="Validation\SearchResourceValidator.cs" />
     <Compile Include="Validation\IValidator.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Authentication\" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
   <ProjectExtensions>

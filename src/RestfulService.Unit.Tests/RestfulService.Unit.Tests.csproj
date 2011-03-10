@@ -59,7 +59,6 @@
     <Compile Include="ArtistHandlerPutTests.cs" />
     <Compile Include="ArtistReaderTests.cs" />
     <Compile Include="ArtistWriterTests.cs" />
-    <Compile Include="Authentication\RequiresOAuthInterceptortests.cs" />
     <Compile Include="FileWrapperTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -72,7 +71,9 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Authentication\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

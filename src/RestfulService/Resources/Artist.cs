@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Runtime.Serialization;
-using System.Xml;
-using System.Xml.Schema;
 using System.Xml.Serialization;
-using OpenRasta;
 using OpenRasta.Binding;
 
 namespace RestfulService.Resources
@@ -24,6 +20,13 @@ namespace RestfulService.Resources
 		[XmlElement("genre")]
 		[DataMember(Name = "genre")]
 		public string Genre { get; set; }
+
+		public Artist()
+		{
+			Id = 0;
+			Name = string.Empty;
+			Genre = string.Empty;
+		}
 	}
 
 	public interface IHasId

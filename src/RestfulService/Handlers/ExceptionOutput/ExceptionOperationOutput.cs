@@ -5,7 +5,6 @@ using log4net;
 using OpenRasta.Binding;
 using OpenRasta.Web;
 using RestfulService.Exceptions;
-using RestfulService.OperationInterceptors;
 using RestfulService.Resources;
 
 namespace RestfulService.Handlers.ExceptionOutput
